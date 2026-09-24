@@ -1,0 +1,166 @@
+% =============================================================================
+% 2. INTRODUCCIÓN
+% =============================================================================
+
+\section{Introducción}
+
+\subsection{Escenario}
+
+\subsubsection{Contexto del negocio}
+
+Smart-Park es una plataforma web de tipo marketplace orientada a resolver la problemática de búsqueda y gestión de espacios de estacionamiento en la ciudad de Ayacucho (Huamanga), con capacidad de expansión a otras ciudades. Su modelo de negocio es un marketplace de varios inquilinos (\textit{multi-tenant}) bajo la modalidad SaaS para los estacionamientos afiliados.
+
+El modelo consiste en conectar a los conductores con una red de estacionamientos afiliados. Cada local conserva autonomía operativa sobre sus espacios, su plano digital, sus tarifas por tipo de vehículo (por hora o por minuto, con recargo nocturno opcional), su tiempo de tolerancia, sus políticas de reserva, sus cámaras, su personal y sus operaciones de garita. La plataforma central se encarga de lo común a toda la red: la afiliación de nuevos locales, la seguridad y el control de accesos, la gestión financiera y las comisiones, la configuración global y la auditoría de los eventos del sistema.
+
+Las fuentes de ingreso de la plataforma son cuatro: una comisión por transacción (del 10\,\% al 12\,\%), la suscripción mensual de los locales, la tarifa de servicio por reserva y los abonos mensuales.
+
+\subsubsection{Problemática identificada en conductores}
+
+Se aplicó una encuesta a 108 conductores de la ciudad, cuyos resultados sustentan la necesidad del sistema:
+
+\begin{table}[H]
+\caption{Resultados de Encuesta a Conductores}
+\begin{tabularx}{\textwidth}{X r}
+\toprule
+\textbf{Indicador} & \textbf{Porcentaje} \\
+\midrule
+No siempre sabe, antes de dirigirse a un estacionamiento, si existen espacios disponibles & 90,7\,\% \\
+Considera la congestión vehicular un problema ligado a la búsqueda de estacionamiento & 75,0\,\% \\
+Señala que demora demasiado tiempo en encontrar un espacio libre & 75,9\,\% \\
+Ha dejado de realizar una compra, trámite o actividad por no encontrar estacionamiento & 76,9\,\% \\
+No conoce las tarifas antes de ingresar & 64,8\,\% \\
+No puede reservar un espacio con anticipación & 66,7\,\% \\
+Utilizaría una aplicación que muestre estacionamientos disponibles en tiempo real & 96,3\,\% \\
+Utilizaría una aplicación para encontrar y reservar estacionamientos & 99,1\,\% \\
+Utilizaría la solución si estuviera disponible & 98,1\,\% \\
+Estaría dispuesto a pagar un pequeño monto de garantía para reservar un espacio & 98,1\,\% \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textit{Nota.} Los datos se obtuvieron mediante encuesta propia aplicada a 108 conductores de la ciudad de Ayacucho (Huamanga) durante el mes de julio de 2026.
+
+\subsubsection{Problemática identificada en estacionamientos}
+
+Se aplicó una encuesta complementaria a 21 trabajadores y administradores de estacionamientos:
+
+\begin{table}[H]
+\caption{Resultados de Encuesta a Trabajadores y Administradores}
+\begin{tabularx}{\textwidth}{X r}
+\toprule
+\textbf{Indicador} & \textbf{Porcentaje} \\
+\midrule
+Considera un problema no saber cuántos espacios quedan disponibles & 66,7\,\% \\
+Identifica congestión durante las horas punta & 57,1\,\% \\
+No utiliza actualmente un sistema especializado de administración & 61,9\,\% \\
+Está interesado en conocer la disponibilidad en tiempo real & 95,2\,\% \\
+Considera importante automatizar el registro de ingreso y salida & 100\,\% \\
+Utilizaría una plataforma para administrar el estacionamiento & 85,7\,\% \\
+Implementaría un sistema tecnológico de gestión & 95,2\,\% \\
+Pagaría una suscripción mensual por el servicio & 90,5\,\% \\
+Considera importante ahorrar tiempo & 90,5\,\% \\
+Considera importante tener mayor control del negocio & 85,7\,\% \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textit{Nota.} Los datos se obtuvieron mediante encuesta propia aplicada a 21 trabajadores y administradores de estacionamientos de la ciudad de Ayacucho (Huamanga) durante el mes de julio de 2026.
+
+\subsubsection{Solución propuesta}
+
+Ante esta problemática se propone Smart-Park, cuyas capacidades principales son:
+
+\begin{itemize}
+    \item Registro y administración centralizada de múltiples estacionamientos afiliados, mediante un flujo de solicitud de afiliación que el administrador de plataforma revisa, aprueba o rechaza.
+    \item Localización de estacionamientos mediante geolocalización y mapa interactivo con capas de calles y satélite, y filtros por zona, tipo de espacio y tarifa.
+    \item Consulta en tiempo real de la disponibilidad, las tarifas y las calificaciones, con actualización inmediata del estado de los espacios mediante WebSocket.
+    \item Estudio de diseño de planos (editor CAD en dos dimensiones) para que cada local dibuje su distribución física: espacios para autos y motos, espacios techados, muros, accesos, garita y pasos peatonales.
+    \item Reserva de un espacio específico sobre el plano interactivo o asignación automática del primer espacio disponible, en las modalidades estándar (por horas o minutos), anticipada (fecha futura) y abono (semanal, mensual o fraccionado por días).
+    \item Pase de acceso digital con código QR y temporizador de tolerancia, verificable por el personal de garita en una página pública de validación.
+    \item Liberación automática de reservas vencidas mediante un tiempo de tolerancia configurable por local.
+    \item Cobro automático según el tiempo de permanencia, la tarifa del tipo de vehículo, la unidad de cobro y el recargo nocturno, con liquidación de la sobreestadía por la pasarela o en la garita.
+    \item Pagos electrónicos con tarjetas, billeteras digitales (Yape y Plin) y PayPal, a través de las pasarelas Culqi y PayPal, con cálculo de comisiones y liquidación de fondos a cada local.
+    \item Detección automática de vehículos mediante cámaras IP y visión artificial (modelo YOLOv8, con respaldo en OpenCV), habilitada en los locales que aprueban una evaluación técnica de techado, calidad de cámaras, estabilidad de red, trazado de espacios e iluminación.
+    \item Seguridad basada en control de acceso por roles (RBAC), sesiones con tokens JWT en cookies HttpOnly, inicio de sesión con correo y contraseña o con cuenta de Google, PIN de seguridad de 4 a 6 dígitos para los perfiles administrativos, limitación de intentos de inicio de sesión y bitácora de auditoría.
+    \item Notificaciones en tiempo real, reseñas y calificaciones de 1 a 5 estrellas, reporte de incidencias con evidencia fotográfica, y administración de términos, condiciones y políticas de uso.
+    \item Reportes estadísticos y financieros a nivel de local y de plataforma, con copias de seguridad automáticas de la base de datos.
+    \item Interfaz web responsiva, instalable como aplicación (PWA) en computadoras, tablets y teléfonos móviles.
+\end{itemize}
+
+\subsubsection{Actores del sistema}
+
+\paragraph{Actores principales} Se identifican cuatro actores principales que interactúan directamente con el sistema:
+
+\begin{table}[H]
+\caption{Actores Principales del Sistema}
+\begin{tabularx}{\textwidth}{p{2.8cm} p{2cm} p{2.5cm} X}
+\toprule
+\textbf{Actor} & \textbf{Tipo} & \textbf{Nivel} & \textbf{Responsabilidades principales} \\
+\midrule
+Administrador de plataforma & Principal (interno) & Nivel central & Administra toda la red de estacionamientos afiliados. Aprueba o rechaza afiliaciones, realiza la evaluación técnica y habilita el módulo de cámaras, gestiona usuarios y roles, define comisiones y configuración global, liquida fondos, modera reseñas, envía comunicados masivos y supervisa la auditoría. \\
+\midrule
+Administrador de local & Principal (interno) & Central y estacionamiento & Administra un estacionamiento específico: datos generales, plano digital, espacios, tarifas, políticas de reserva, cámaras y su calibración, personal y turnos. Responde reseñas, resuelve incidencias y consulta los reportes de su local. \\
+\midrule
+Trabajador del local & Principal (interno) & Estacionamiento & Supervisa la operación diaria: valida los pases QR, registra ingresos y salidas, controla el estado de los espacios, cobra en garita cuando corresponde y registra incidencias. \\
+\midrule
+Usuario final (conductor) & Principal (externo) & Nivel central & Se registra, busca estacionamientos en el mapa, registra sus vehículos, reserva y paga espacios, usa el pase QR, amplía o cancela reservas, consulta su historial, reporta incidencias y califica el servicio. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{Actores secundarios y sistemas externos} Complementan las funcionalidades del sistema:
+
+\begin{table}[H]
+\caption{Actores Secundarios y Sistemas Externos}
+\begin{tabularx}{\textwidth}{p{4.5cm} X}
+\toprule
+\textbf{Actor o sistema} & \textbf{Función en el sistema} \\
+\midrule
+Cámaras IP de los locales habilitados & Proporcionan las imágenes que el motor de visión artificial analiza para detectar vehículos y determinar la ocupación de los espacios. \\
+Motor de visión artificial (YOLOv8 / OpenCV) & Detecta los vehículos (autos, motos, buses y camiones) y clasifica cada espacio como libre u ocupado. \\
+Pasarelas de pago (Culqi y PayPal) & Procesan los cobros con tarjeta y billeteras digitales, y confirman o rechazan cada transacción. \\
+Servicio de autenticación de Google & Permite iniciar sesión con una cuenta de Google. \\
+Servicio de mapas (Leaflet) & Muestra el mapa interactivo, la ubicación de los locales y la posición del usuario. \\
+Procesos automáticos del sistema & Liberan reservas por vencimiento de la tolerancia, escanean las cámaras de forma periódica y realizan las copias de seguridad programadas. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Diagrama de Contexto}
+
+El diagrama de contexto (Figura~1) sitúa al sistema Smart-Park como bloque central. Alrededor de este bloque se representan los actores y sistemas externos, cada uno conectado mediante una flecha etiquetada con el tipo de dato que intercambia.
+
+% Aquí debes incluir tu imagen del diagrama de contexto:
+% \begin{figure}[H]
+% \caption{Diagrama de Contexto del Sistema Smart-Park}
+% \centering
+% \includegraphics[width=0.95\textwidth]{imagenes/diagrama_contexto.png}
+% \end{figure}
+% \textit{Nota.} Elaboración propia.
+
+La Tabla~7 describe los flujos de información entre el sistema y cada actor externo:
+
+\begin{table}[H]
+\caption{Intercambio de Datos en el Diagrama de Contexto}
+\begin{tabularx}{\textwidth}{p{3.5cm} p{2cm} X}
+\toprule
+\textbf{Actor / Sistema externo} & \textbf{Dirección} & \textbf{Datos intercambiados} \\
+\midrule
+Usuario final (conductor) & Bidireccional & Envía: ubicación, datos de reserva, placa y tipo de vehículo, pago, reseñas e incidencias. Recibe: disponibilidad en tiempo real, tarifas, confirmaciones, notificaciones, pase QR y comprobantes. \\
+\midrule
+Administrador de plataforma & Bidireccional & Envía: decisiones de afiliación, resultados de evaluación técnica, comisiones, configuración global y comunicados. Recibe: solicitudes de afiliación, reportes consolidados y alertas de auditoría. \\
+\midrule
+Administrador de local & Bidireccional & Envía: datos del local, plano, tarifas, horarios, políticas de reserva, personal y registro de cámaras. Recibe: reportes del local, reseñas e incidencias. \\
+\midrule
+Trabajador del local & Bidireccional & Envía: validación de pases QR, registro de ingreso y salida, e incidencias. Recibe: estado de los espacios en tiempo real y alertas operativas. \\
+\midrule
+Cámaras IP & Entrante & Imágenes (MJPEG o JPEG) de los locales habilitados, capturadas por la plataforma mediante HTTP/HTTPS. \\
+\midrule
+Pasarelas de pago & Bidireccional & Envía: solicitud de cobro. Recibe: confirmación o rechazo de la transacción. \\
+\midrule
+Autenticación de Google & Bidireccional & Envía: solicitud de inicio de sesión. Recibe: identidad verificada del usuario. \\
+\midrule
+Servicio de mapas & Bidireccional & Envía: coordenadas del usuario y de los locales. Recibe: capas cartográficas de calles y satélite. \\
+\bottomrule
+\end{tabularx}
+\end{table}

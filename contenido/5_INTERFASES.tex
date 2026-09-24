@@ -1,0 +1,174 @@
+% =============================================================================
+% 5. INTERFASES
+% =============================================================================
+
+\section{Interfases}
+
+Las interfases definen los contratos de comunicación entre los componentes del sistema y con los sistemas externos. Cada interfase especifica el origen, el destino, el protocolo de transporte, el formato de datos y la estructura de los mensajes intercambiados.
+
+\subsection{Diagrama de Interfases}
+
+El diagrama de interfases (Figura~3) representa gráficamente los puntos de integración del sistema. Cada flecha indica una interfase con su protocolo y la dirección del flujo de datos.
+
+% Aquí debes incluir tu imagen del diagrama de interfases:
+% \begin{figure}[H]
+% \caption{Diagrama de Interfases del Sistema Smart-Park}
+% \centering
+% \includegraphics[width=0.95\textwidth]{imagenes/diagrama_interfases.png}
+% \end{figure}
+% \textit{Nota.} Elaboración propia.
+
+Las siete interfases principales del sistema se resumen en la Tabla~13:
+
+\begin{table}[H]
+\caption{Resumen de Interfases del Sistema}
+\begin{tabularx}{\textwidth}{p{0.5cm} p{3.5cm} p{3cm} p{2cm} X}
+\toprule
+\textbf{N.°} & \textbf{Nombre} & \textbf{Origen $\rightarrow$ Destino} & \textbf{Protocolo} & \textbf{Formato} \\
+\midrule
+I-01 & Solicitud de Reserva & App Web $\rightarrow$ API & HTTPS & JSON \\
+I-02 & Confirmación de Reserva & API $\rightarrow$ App Web & HTTPS & JSON \\
+I-03 & Evento de Notificación & API $\rightarrow$ RabbitMQ $\rightarrow$ Notificaciones & AMQPS & JSON \\
+I-04 & Registro de Ingreso/Salida & Garita $\rightarrow$ API & HTTPS & JSON \\
+I-05 & Solicitud de Pago & API $\rightarrow$ Pasarela & HTTPS & JSON \\
+I-06 & Respuesta de Transacción & Pasarela $\rightarrow$ API & HTTPS & JSON \\
+I-07 & Registro de Reseña & App Web $\rightarrow$ API & HTTPS & JSON \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Estructura de Datos de las Interfases}
+
+A continuación se detalla la estructura de datos de cada interfase, incluyendo los campos, tipos y restricciones del mensaje.
+
+\subsubsection{Interfase --- Solicitud de Reserva (Aplicación Web $\rightarrow$ API, HTTPS/JSON)}
+
+\begin{table}[H]
+\caption{Estructura de la Interfase I-01: Solicitud de Reserva}
+\begin{tabularx}{\textwidth}{p{3.5cm} p{2.5cm} p{1.5cm} X}
+\toprule
+\textbf{Campo} & \textbf{Tipo} & \textbf{Requerido} & \textbf{Descripción} \\
+\midrule
+\texttt{espacio\_id} & UUID & Sí & Identificador único del espacio seleccionado en el plano. \\
+\texttt{vehiculo\_id} & UUID & Sí & Identificador del vehículo registrado por el conductor. \\
+\texttt{modalidad} & String (enum) & Sí & Tipo de reserva: \texttt{estandar}, \texttt{anticipada}, \texttt{abono}. \\
+\texttt{duracion\_minutos} & Integer & Sí & Duración solicitada en minutos. \\
+\texttt{fecha\_inicio} & DateTime (ISO 8601) & No & Solo para reservas anticipadas; por defecto es la hora actual. \\
+\texttt{metodo\_pago} & String (enum) & Sí & Método: \texttt{tarjeta}, \texttt{yape}, \texttt{plin}, \texttt{paypal}, \texttt{garita}. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textit{Nota.} El \texttt{usuario\_id} se extrae del token JWT en la cookie de sesión y no se envía en el cuerpo de la petición.
+
+\subsubsection{Interfase --- Confirmación de Reserva (API $\rightarrow$ Aplicación Web, HTTPS/JSON)}
+
+\begin{table}[H]
+\caption{Estructura de la Interfase I-02: Confirmación de Reserva}
+\begin{tabularx}{\textwidth}{p{3.5cm} p{2.5cm} p{1.5cm} X}
+\toprule
+\textbf{Campo} & \textbf{Tipo} & \textbf{Requerido} & \textbf{Descripción} \\
+\midrule
+\texttt{reserva\_id} & UUID & Sí & Identificador único de la reserva creada. \\
+\texttt{codigo\_qr} & String (Base64) & Sí & Imagen del código QR codificada en Base64. \\
+\texttt{codigo\_validacion} & String (8 car.) & Sí & Código alfanumérico para validación manual en garita. \\
+\texttt{estado} & String (enum) & Sí & Estado inicial: \texttt{confirmada}. \\
+\texttt{importe\_total} & Decimal & Sí & Importe calculado según tarifa, duración y recargos. \\
+\texttt{moneda} & String & Sí & Código de moneda: \texttt{PEN}. \\
+\texttt{hora\_limite} & DateTime (ISO 8601) & Sí & Hora límite para ingresar antes de la liberación automática (tolerancia). \\
+\texttt{espacio} & Object & Sí & Objeto con datos del espacio: nombre, tipo, ubicación en el plano. \\
+\texttt{estacionamiento} & Object & Sí & Objeto con datos del local: nombre, dirección, coordenadas. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsubsection{Interfase --- Evento de Notificación (API $\rightarrow$ RabbitMQ $\rightarrow$ Servicio de Notificaciones)}
+
+\begin{table}[H]
+\caption{Estructura de la Interfase I-03: Evento de Notificación}
+\begin{tabularx}{\textwidth}{p{3.5cm} p{2.5cm} p{1.5cm} X}
+\toprule
+\textbf{Campo} & \textbf{Tipo} & \textbf{Requerido} & \textbf{Descripción} \\
+\midrule
+\texttt{evento\_tipo} & String (enum) & Sí & Tipo: \texttt{reserva.creada}, \texttt{reserva.cancelada}, \texttt{reserva.expirada}, \texttt{pago.confirmado}, \texttt{incidencia.nueva}, \texttt{comunicado}. \\
+\texttt{evento\_id} & UUID & Sí & Identificador único del evento. \\
+\texttt{timestamp} & DateTime (ISO 8601) & Sí & Fecha y hora de generación del evento. \\
+\texttt{destinatario\_id} & UUID & Sí & Identificador del usuario destinatario. \\
+\texttt{canal} & String (enum) & Sí & Canal de entrega: \texttt{websocket}, \texttt{email}, \texttt{ambos}. \\
+\texttt{payload} & Object & Sí & Datos específicos del evento (varían según el tipo). \\
+\texttt{prioridad} & String (enum) & No & Prioridad del evento: \texttt{alta}, \texttt{media}, \texttt{baja}. Por defecto: \texttt{media}. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsubsection{Interfase --- Registro de Ingreso/Salida de Vehículo (Agente del Sistema Local $\rightarrow$ API central, API REST)}
+
+\begin{table}[H]
+\caption{Estructura de la Interfase I-04: Registro de Ingreso/Salida}
+\begin{tabularx}{\textwidth}{p{3.5cm} p{2.5cm} p{1.5cm} X}
+\toprule
+\textbf{Campo} & \textbf{Tipo} & \textbf{Requerido} & \textbf{Descripción} \\
+\midrule
+\texttt{reserva\_id} & UUID & Sí & Identificador de la reserva asociada. \\
+\texttt{accion} & String (enum) & Sí & Acción: \texttt{ingreso} o \texttt{salida}. \\
+\texttt{trabajador\_id} & UUID & Sí & Identificador del trabajador que registra la acción. \\
+\texttt{timestamp} & DateTime (ISO 8601) & Sí & Fecha y hora del registro. \\
+\texttt{metodo\_verificacion} & String (enum) & Sí & Método: \texttt{qr\_escaner}, \texttt{codigo\_manual}, \texttt{placa\_manual}. \\
+\texttt{observacion} & String (500 car.) & No & Observación opcional del trabajador. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsubsection{Interfase --- Solicitud de Pago (API $\rightarrow$ Proveedor de Pagos externo)}
+
+\begin{table}[H]
+\caption{Estructura de la Interfase I-05: Solicitud de Pago}
+\begin{tabularx}{\textwidth}{p{3.5cm} p{2.5cm} p{1.5cm} X}
+\toprule
+\textbf{Campo} & \textbf{Tipo} & \textbf{Requerido} & \textbf{Descripción} \\
+\midrule
+\texttt{monto} & Decimal & Sí & Importe a cobrar en la moneda especificada. \\
+\texttt{moneda} & String & Sí & Código ISO 4217: \texttt{PEN} o \texttt{USD}. \\
+\texttt{descripcion} & String & Sí & Descripción del cobro: ``Reserva en [nombre del local]''. \\
+\texttt{token\_tarjeta} & String & Condicional & Token de la tarjeta generado por Culqi.js o PayPal SDK. Requerido si el método no es \texttt{garita}. \\
+\texttt{metadata} & Object & Sí & Datos internos: \texttt{reserva\_id}, \texttt{usuario\_id}, \texttt{estacionamiento\_id}. \\
+\texttt{email\_cliente} & String & Sí & Correo electrónico del conductor para el comprobante. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsubsection{Interfase --- Respuesta de Transacción (Proveedor de Pagos $\rightarrow$ API)}
+
+\begin{table}[H]
+\caption{Estructura de la Interfase I-06: Respuesta de Transacción}
+\begin{tabularx}{\textwidth}{p{3.5cm} p{2.5cm} p{1.5cm} X}
+\toprule
+\textbf{Campo} & \textbf{Tipo} & \textbf{Requerido} & \textbf{Descripción} \\
+\midrule
+\texttt{transaccion\_id} & String & Sí & Identificador de la transacción asignado por la pasarela. \\
+\texttt{estado} & String (enum) & Sí & Estado: \texttt{aprobada}, \texttt{rechazada}, \texttt{pendiente}. \\
+\texttt{monto\_cobrado} & Decimal & Sí & Monto efectivamente cobrado. \\
+\texttt{moneda} & String & Sí & Código de moneda de la transacción. \\
+\texttt{fecha\_transaccion} & DateTime (ISO 8601) & Sí & Fecha y hora de la transacción registrada por la pasarela. \\
+\texttt{codigo\_error} & String & No & Código de error en caso de rechazo. \\
+\texttt{mensaje} & String & No & Mensaje descriptivo de la pasarela. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsubsection{Interfase --- Registro de Reseña (Aplicación Web $\rightarrow$ API)}
+
+\begin{table}[H]
+\caption{Estructura de la Interfase I-07: Registro de Reseña}
+\begin{tabularx}{\textwidth}{p{3.5cm} p{2.5cm} p{1.5cm} X}
+\toprule
+\textbf{Campo} & \textbf{Tipo} & \textbf{Requerido} & \textbf{Descripción} \\
+\midrule
+\texttt{estacionamiento\_id} & UUID & Sí & Identificador del estacionamiento calificado. \\
+\texttt{reserva\_id} & UUID & Sí & Identificador de la reserva asociada (solo se puede calificar después de usar el servicio). \\
+\texttt{calificacion} & Integer (1--5) & Sí & Calificación en estrellas: 1 (muy malo) a 5 (excelente). \\
+\texttt{comentario} & String (1000 car.) & No & Comentario textual del conductor. \\
+\texttt{es\_anonima} & Boolean & No & Si es \texttt{true}, el nombre del conductor no se muestra públicamente. Por defecto: \texttt{false}. \\
+\bottomrule
+\end{tabularx}
+\end{table}

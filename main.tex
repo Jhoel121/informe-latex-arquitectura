@@ -1,0 +1,192 @@
+% =============================================================================
+% DOCUMENTO PRINCIPAL — INFORME DE ARQUITECTURA DE SOFTWARE: SMART-PARK
+% Formato: APA 7.ª edición (versión estudiante)
+% =============================================================================
+\documentclass[12pt, letterpaper]{article}
+
+% --- Geometría y márgenes APA 7: 2.54 cm (1 pulgada) en los cuatro bordes ---
+\usepackage[top=2.54cm, bottom=2.54cm, left=2.54cm, right=2.54cm]{geometry}
+
+% --- Idioma y codificación ---
+\usepackage[spanish,es-tabla]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% --- Tipografía: Times New Roman 12 pt (APA 7) ---
+\usepackage{mathptmx}
+
+% --- Interlineado doble APA 7 ---
+\usepackage{setspace}
+\doublespacing
+
+% --- Sangría de primera línea: 1.27 cm (0.5 in) ---
+\usepackage{indentfirst}
+\setlength{\parindent}{1.27cm}
+
+% --- Alineación a la izquierda sin justificar (APA 7) ---
+\usepackage[document]{ragged2e}
+
+% --- Encabezados y paginación ---
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\thepage}          % Número de página en la esquina superior derecha
+\renewcommand{\headrulewidth}{0pt}
+
+% Aplicar el mismo estilo a las páginas de inicio de sección
+\fancypagestyle{plain}{%
+  \fancyhf{}
+  \fancyhead[R]{\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+% --- Títulos numerados (según solicitud del usuario: 1_TITULO) ---
+\usepackage{titlesec}
+
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
+
+% Nivel 1 — Centrado, Negrita, Título
+\titleformat{\section}
+  [block]
+  {\normalfont\fontsize{12}{14}\bfseries\filcenter}
+  {\thesection.}
+  {0.5em}
+  {\MakeUppercase}
+\titlespacing*{\section}{0pt}{12pt}{6pt}
+
+% Nivel 2 — Alineado a la izquierda, Negrita
+\titleformat{\subsection}
+  [block]
+  {\normalfont\fontsize{12}{14}\bfseries}
+  {\thesubsection.}
+  {0.5em}
+  {}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+
+% Nivel 3 — Alineado a la izquierda, Negrita, Cursiva
+\titleformat{\subsubsection}
+  [block]
+  {\normalfont\fontsize{12}{14}\bfseries\itshape}
+  {\thesubsubsection.}
+  {0.5em}
+  {}
+\titlespacing*{\subsubsection}{0pt}{12pt}{6pt}
+
+% Nivel 4 — Sangría 1.27 cm, Negrita, termina con punto, texto en línea
+\titleformat{\paragraph}
+  [runin]
+  {\normalfont\fontsize{12}{14}\bfseries}
+  {}
+  {0pt}
+  {}[.]
+\titlespacing*{\paragraph}{1.27cm}{12pt}{0.5em}
+
+% Nivel 5 — Sangría 1.27 cm, Negrita cursiva, termina con punto, texto en línea
+\titleformat{\subparagraph}
+  [runin]
+  {\normalfont\fontsize{12}{14}\bfseries\itshape}
+  {}
+  {0pt}
+  {}[.]
+\titlespacing*{\subparagraph}{1.27cm}{12pt}{0.5em}
+
+% --- Tablas y figuras ---
+\usepackage{graphicx}
+\usepackage{booktabs}           % Líneas horizontales profesionales
+\usepackage{longtable}          % Tablas que cruzan páginas
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{float}
+
+% Formato de caption APA 7: "Tabla 1" en negrita, título en cursiva debajo
+\usepackage{caption}
+\DeclareCaptionLabelFormat{apatable}{\textbf{#1 #2}}
+\DeclareCaptionLabelFormat{apafigure}{\textbf{#1 #2}}
+\captionsetup[table]{
+  labelformat=apatable,
+  labelsep=newline,
+  justification=raggedright,
+  singlelinecheck=false,
+  font={doublespacing},
+  textfont={it}
+}
+\captionsetup[figure]{
+  labelformat=apafigure,
+  labelsep=newline,
+  justification=raggedright,
+  singlelinecheck=false,
+  font={doublespacing},
+  textfont={it}
+}
+
+% --- Listas ---
+\usepackage{enumitem}
+\setlist{nosep, leftmargin=1.27cm}
+
+% --- Hipervínculos ---
+\usepackage[hidelinks]{hyperref}
+\urlstyle{same}                 % URL con la misma fuente del documento
+
+% --- Color (para portada) ---
+\usepackage{xcolor}
+
+% --- Para la portada con imagen ---
+\usepackage{tikz}
+
+% =============================================================================
+%                          INICIO DEL DOCUMENTO
+% =============================================================================
+\begin{document}
+
+% ---------- PORTADA (versión institucional según imagen proporcionada) --------
+\begin{titlepage}
+\thispagestyle{fancy}
+\begin{center}
+
+% --- Logo / imagen de carátula ---
+% Si deseas usar la imagen completa de la carátula:
+\includegraphics[width=\textwidth]{imagenes/caratula.png}
+
+\end{center}
+\end{titlepage}
+
+% ---------- ÍNDICE -----------------------------------------------------------
+\newpage
+\begin{center}
+  \textbf{\fontsize{12}{14}\selectfont ÍNDICE}
+\end{center}
+\vspace{6pt}
+\tableofcontents
+\thispagestyle{fancy}
+
+% =============================================================================
+%                          CUERPO DEL DOCUMENTO
+% =============================================================================
+
+\newpage
+\input{contenido/1_RESPONSABLES}
+
+\newpage
+\input{contenido/2_INTRODUCCION}
+
+\newpage
+\input{contenido/3_SOLUCION}
+
+\newpage
+\input{contenido/4_VISTAS}
+
+\newpage
+\input{contenido/5_INTERFASES}
+
+\newpage
+\input{contenido/6_FUNDAMENTOS_DE_ARQUITECTURA}
+
+\newpage
+\input{contenido/7_BIBLIOGRAFIA}
+
+\newpage
+\input{contenido/8_ANEXOS}
+
+\end{document}

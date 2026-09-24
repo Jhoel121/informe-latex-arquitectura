@@ -1,0 +1,188 @@
+% =============================================================================
+% 4. VISTAS
+% =============================================================================
+
+\section{Vistas}
+
+Las vistas arquitectónicas permiten describir el sistema desde diferentes perspectivas complementarias. Siguiendo el modelo de ``4+1 vistas'' de Kruchten (1995), se presentan la vista lógica, la vista de comportamiento y la vista física.
+
+\subsection{Vista Lógica}
+
+La vista lógica describe la organización interna del sistema en capas funcionales. Smart-Park adopta una arquitectura en capas (\textit{layered architecture}) que separa las responsabilidades de forma vertical:
+
+\begin{table}[H]
+\caption{Capas de la Arquitectura Lógica}
+\begin{tabularx}{\textwidth}{p{3cm} p{3cm} X}
+\toprule
+\textbf{Capa} & \textbf{Tecnología} & \textbf{Responsabilidad} \\
+\midrule
+Presentación & React 19 + Vite & Interfaz de usuario, enrutamiento SPA, comunicación HTTP/WSS con el backend. \\
+\midrule
+Aplicación (API) & FastAPI + SQLAlchemy & Lógica de negocio, autenticación, autorización, orquestación de servicios. \\
+\midrule
+Servicios locales & Python (YOLOv8, OpenCV) & Motor de visión artificial, procesos automáticos de liberación y respaldo. \\
+\midrule
+Mensajería y caché & RabbitMQ + Redis & Comunicación asíncrona entre servicios, caché de sesiones y estado temporal. \\
+\midrule
+Datos & PostgreSQL + Volumen & Almacenamiento persistente relacional y almacenamiento de archivos binarios. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsubsection{Capa de presentación (React 19 + Vite)}
+
+La capa de presentación es una aplicación de página única (\textit{Single Page Application}, SPA) construida con React 19 y empaquetada con Vite. Se despliega en Vercel como activos estáticos y se conecta a la API central por HTTPS y al servidor de WebSocket por WSS.
+
+Sus responsabilidades son:
+
+\begin{itemize}
+    \item \textbf{Enrutamiento del lado del cliente:} mediante React Router, se gestionan las rutas protegidas según el rol del usuario autenticado. Cada perfil (administrador de plataforma, administrador de local, trabajador y conductor) accede a un conjunto diferente de vistas.
+    \item \textbf{Gestión de estado:} se utiliza React Context y \texttt{useReducer} para el estado global (sesión, notificaciones, configuración) y hooks locales (\texttt{useState}, \texttt{useEffect}) para el estado de cada componente.
+    \item \textbf{Comunicación con la API:} mediante \texttt{fetch} o Axios, las peticiones se envían a la API REST con tokens JWT almacenados en cookies HttpOnly. El navegador incluye las cookies automáticamente en cada petición (\texttt{credentials: 'include'}).
+    \item \textbf{WebSocket:} una conexión persistente WSS recibe en tiempo real el estado de los espacios (libre, ocupado, reservado), las notificaciones y los eventos de reserva.
+    \item \textbf{Editor de planos 2D:} un componente Canvas interactivo permite al administrador de local dibujar la distribución del estacionamiento, colocando espacios, muros, accesos y la garita. El conductor visualiza el plano con el estado en vivo de cada espacio.
+    \item \textbf{Mapa interactivo:} integrado con Leaflet y React-Leaflet, muestra los estacionamientos afiliados con marcadores que indican disponibilidad, calificación y tarifa. Soporta capas de calles y satélite.
+    \item \textbf{PWA:} mediante un Service Worker y un manifiesto web (\texttt{manifest.json}), la aplicación es instalable en el dispositivo del usuario.
+\end{itemize}
+
+\subsubsection{Capa de aplicación --- API y Servicios de Negocio (FastAPI + SQLAlchemy asíncrono)}
+
+La API central es el núcleo del sistema. Construida con FastAPI y ejecutada sobre Uvicorn, expone endpoints RESTful con serialización JSON. Utiliza SQLAlchemy en modo asíncrono (\texttt{asyncio}) para las operaciones de base de datos, logrando alta concurrencia sin bloquear el bucle de eventos.
+
+Los módulos principales de la capa de aplicación son:
+
+\begin{itemize}
+    \item \textbf{Módulo de autenticación y autorización:} registro, inicio de sesión (correo/contraseña y Google OAuth 2.0), emisión y verificación de tokens JWT, PIN de seguridad, limitación de intentos y middleware RBAC.
+    \item \textbf{Módulo de gestión de estacionamientos:} afiliación de locales, evaluación técnica, plano digital, espacios, tarifas, horarios, políticas de reserva y cámaras.
+    \item \textbf{Módulo de reservas:} creación, confirmación, cancelación y ampliación de reservas; generación del pase QR; temporizador de tolerancia y liberación automática.
+    \item \textbf{Módulo de pagos:} integración con Culqi y PayPal, cálculo de importes según tarifa y tiempo, comisiones, liquidación de fondos y comprobantes.
+    \item \textbf{Módulo de visión artificial:} orquesta el escaneo periódico de las cámaras, recibe los resultados de detección y actualiza el estado de los espacios.
+    \item \textbf{Módulo de reportes y auditoría:} generación de reportes estadísticos y financieros, bitácora de eventos del sistema y exportación de datos.
+    \item \textbf{Módulo de notificaciones:} consume eventos de la cola RabbitMQ y difunde notificaciones mediante WebSocket y correo electrónico.
+\end{itemize}
+
+\subsubsection{Capa de servicios locales}
+
+Esta capa contiene los procesos que se ejecutan dentro del mismo contenedor Docker pero de manera independiente a las peticiones HTTP:
+
+\begin{itemize}
+    \item \textbf{Motor de visión artificial:} un proceso periódico (configurable entre 30 y 120 segundos) que captura imágenes de las cámaras IP habilitadas, las procesa con YOLOv8 (o OpenCV como respaldo) y publica el resultado en la cola de mensajes.
+    \item \textbf{Proceso de liberación de reservas:} un \textit{scheduler} que revisa periódicamente las reservas cuyo tiempo de tolerancia ha expirado y las libera, devolviendo el espacio al estado disponible.
+    \item \textbf{Proceso de copias de seguridad:} ejecuta \texttt{pg\_dump} sobre la base de datos y almacena el respaldo en el volumen \texttt{/data}, con rotación de archivos antiguos.
+\end{itemize}
+
+\subsubsection{Capa de mensajería y caché}
+
+\begin{itemize}
+    \item \textbf{RabbitMQ (CloudAMQP):} actúa como intermediario de mensajes (\textit{message broker}) entre la API central y los procesos asíncronos. Los intercambios (\textit{exchanges}) principales son:
+    \begin{itemize}
+        \item \texttt{reservations}: eventos de creación, confirmación, cancelación y expiración de reservas.
+        \item \texttt{notifications}: eventos que disparan notificaciones por WebSocket y correo electrónico.
+        \item \texttt{camera\_events}: resultados de detección del motor de visión artificial.
+        \item \texttt{backups}: comandos para iniciar copias de seguridad manuales o programadas.
+    \end{itemize}
+    \item \textbf{Redis (Railway):} almacena en memoria:
+    \begin{itemize}
+        \item Sesiones de usuario y tokens de acceso vigentes.
+        \item Estado temporal de los espacios (caché de disponibilidad para consultas rápidas).
+        \item Contadores de intentos de inicio de sesión (para la limitación de intentos).
+        \item Resultados de consultas frecuentes (caché de tarifas, locales cercanos).
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Capa de datos}
+
+La capa de datos comprende dos componentes:
+
+\begin{itemize}
+    \item \textbf{PostgreSQL (Railway):} base de datos relacional que almacena de forma persistente las catorce entidades principales del modelo de datos: usuarios, estacionamientos, espacios, planos, tarifas, reservas, pagos, comisiones, reseñas, incidencias, cámaras, evaluaciones técnicas, auditoría y configuración global. Las relaciones entre entidades se definen mediante llaves foráneas con integridad referencial, y se aplican índices en los campos de consulta frecuente.
+    \item \textbf{Volumen persistente (\texttt{/data}):} almacena archivos binarios que no pertenecen al modelo relacional: fotografías de vehículos capturadas por el motor de visión artificial, evidencias de incidencias subidas por los usuarios, logotipos de los estacionamientos y respaldos comprimidos de la base de datos.
+\end{itemize}
+
+\subsection{Vista de Comportamiento}
+
+La vista de comportamiento describe cómo los componentes del sistema interactúan entre sí para satisfacer los casos de uso principales. Se modelan mediante diagramas de secuencia que representan los flujos de mensajes entre los actores y los contenedores.
+
+\paragraph{Flujo de reserva estándar} El conductor selecciona un espacio en el plano interactivo y confirma la reserva:
+
+\begin{enumerate}
+    \item El conductor abre la vista de un estacionamiento y visualiza el plano con el estado en vivo de los espacios (recibido por WebSocket).
+    \item Selecciona un espacio disponible y pulsa ``Reservar''.
+    \item La SPA envía una petición \texttt{POST /api/reservas} con el identificador del espacio, el tipo de vehículo, la modalidad y la duración.
+    \item La API valida la disponibilidad del espacio (consultando Redis y PostgreSQL), crea el registro de reserva, genera el código QR y calcula el importe.
+    \item La API publica un evento \texttt{reservation.created} en RabbitMQ.
+    \item RabbitMQ entrega el evento al consumidor de notificaciones, que difunde la actualización del estado del espacio por WebSocket a todos los clientes conectados al mismo local.
+    \item La API responde al conductor con la confirmación, el pase QR, el importe y el temporizador de tolerancia.
+    \item El conductor recibe la confirmación y puede visualizar su pase QR.
+\end{enumerate}
+
+\paragraph{Flujo de validación en garita} El trabajador valida el pase QR del conductor al ingresar al estacionamiento:
+
+\begin{enumerate}
+    \item El conductor muestra el código QR en su dispositivo.
+    \item El trabajador escanea el QR con la cámara de su dispositivo o ingresa el código manualmente.
+    \item El navegador del trabajador envía una petición \texttt{GET /api/validar/\{codigo\}} a la API.
+    \item La API verifica que la reserva existe, que no ha expirado, que el vehículo coincide y que el estado es ``confirmada''.
+    \item La API actualiza el estado de la reserva a ``en uso'' y registra la hora de ingreso.
+    \item Se publica el evento \texttt{reservation.checked\_in} en RabbitMQ, que actualiza el estado del espacio por WebSocket.
+    \item La API responde al trabajador con la confirmación del ingreso.
+\end{enumerate}
+
+\paragraph{Flujo de detección automática por cámara} El motor de visión artificial detecta un vehículo en un espacio:
+
+\begin{enumerate}
+    \item El proceso periódico del motor de visión artificial solicita una imagen a la cámara IP del local mediante HTTP/HTTPS.
+    \item La cámara responde con la imagen (JPEG o cuadro MJPEG).
+    \item El motor ejecuta el modelo YOLOv8 sobre la imagen y obtiene las detecciones (clase del vehículo y coordenadas del cuadro delimitador).
+    \item El motor compara las detecciones con el mapa de espacios del plano digital y clasifica cada espacio como libre u ocupado.
+    \item El motor publica el evento \texttt{camera.detection} en RabbitMQ con el estado actualizado de los espacios.
+    \item El consumidor de eventos de cámara actualiza la base de datos y el caché de Redis, y difunde el nuevo estado por WebSocket.
+\end{enumerate}
+
+\subsection{Vista Física}
+
+La vista física describe la topología de despliegue del sistema, es decir, la distribución de los artefactos de software sobre los nodos de hardware y servicios en la nube.
+
+% Aquí debes incluir tu imagen del diagrama de despliegue:
+% \begin{figure}[H]
+% \caption{Diagrama de Despliegue del Sistema Smart-Park}
+% \centering
+% \includegraphics[width=0.95\textwidth]{imagenes/diagrama_despliegue.png}
+% \end{figure}
+% \textit{Nota.} Elaboración propia.
+
+\begin{table}[H]
+\caption{Nodos de Despliegue}
+\begin{tabularx}{\textwidth}{p{3cm} p{3cm} X}
+\toprule
+\textbf{Nodo} & \textbf{Proveedor} & \textbf{Artefactos desplegados} \\
+\midrule
+Servidor de aplicación & Railway (Docker) & Contenedor con la API (FastAPI + Uvicorn), el servidor WebSocket, el motor de visión artificial (YOLOv8) y los procesos automáticos. \\
+\midrule
+Base de datos & Railway (PostgreSQL) & Instancia PostgreSQL gestionada con respaldo automático y cifrado en reposo. \\
+\midrule
+Caché & Railway (Redis) & Instancia Redis gestionada para sesiones, tokens y estado temporal. \\
+\midrule
+Cola de mensajes & CloudAMQP & Instancia RabbitMQ gestionada con conexión AMQPS cifrada. \\
+\midrule
+CDN y frontend & Vercel & Activos estáticos de la SPA (HTML, CSS, JS, imágenes, Service Worker y manifiesto PWA). \\
+\midrule
+Almacenamiento & Railway (Volumen) & Volumen persistente montado en \texttt{/data} para fotografías y respaldos. \\
+\midrule
+Dispositivos de usuario & Navegadores web & Chrome, Firefox, Safari, Edge en computadoras, tablets y teléfonos. Conexión HTTPS a Vercel y WSS al backend. \\
+\midrule
+Cámaras IP & Red local de cada estacionamiento & Cámaras que transmiten imágenes JPEG/MJPEG vía HTTP/HTTPS al motor de visión artificial. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+La comunicación entre nodos se realiza exclusivamente mediante protocolos cifrados:
+
+\begin{itemize}
+    \item \textbf{Navegador $\leftrightarrow$ Vercel:} HTTPS (TLS 1.2+).
+    \item \textbf{Navegador $\leftrightarrow$ Backend:} HTTPS para la API REST y WSS para WebSocket (TLS 1.2+).
+    \item \textbf{Backend $\leftrightarrow$ PostgreSQL:} conexión cifrada con SSL/TLS.
+    \item \textbf{Backend $\leftrightarrow$ Redis:} conexión cifrada con TLS.
+    \item \textbf{Backend $\leftrightarrow$ RabbitMQ:} AMQPS (AMQP sobre TLS).
+    \item \textbf{Backend $\leftrightarrow$ Cámaras IP:} HTTP o HTTPS según la configuración de la cámara, en la red local del estacionamiento o mediante un túnel seguro.
+\end{itemize}

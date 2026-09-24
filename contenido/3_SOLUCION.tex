@@ -1,0 +1,119 @@
+% =============================================================================
+% 3. SOLUCIÓN
+% =============================================================================
+
+\section{Solución}
+
+\subsection{Sistema}
+
+\subsubsection{Descripción general}
+
+Smart-Park es una plataforma web de arquitectura tipo marketplace, con diseño completamente responsivo para computadoras, tablets y teléfonos móviles, instalable como aplicación (PWA). La arquitectura se organiza en tres niveles jerárquicos que separan la administración central, la operación de cada local afiliado y el acceso de los distintos perfiles de usuario:
+
+\begin{itemize}
+    \item \textbf{Nivel 1 --- Plataforma Smart-Park (nivel central).} Está desplegada en la nube y concentra la lógica de negocio común a toda la red:
+    \begin{itemize}
+        \item Autenticación, control de roles y seguridad perimetral.
+        \item Gestión de usuarios, afiliaciones y estacionamientos.
+        \item Reservas, tarifas y cobros de toda la red.
+        \item Pagos electrónicos y liquidaciones financieras.
+        \item Motor de visión artificial y escaneo periódico de las cámaras.
+        \item Procesos automáticos (liberación de reservas vencidas y copias de seguridad).
+        \item Difusión de eventos en tiempo real y mensajería asíncrona.
+        \item Reportes consolidados, auditoría y configuración global.
+        \item Evaluación técnica de los locales para habilitar la detección de vehículos con inteligencia artificial.
+    \end{itemize}
+    \item \textbf{Nivel 2 --- Nivel de estacionamiento (operación de cada local).} Corresponde a la infraestructura y la operación física de cada local afiliado:
+    \begin{itemize}
+        \item El plano digital del local, con sus espacios y su estado.
+        \item Las cámaras IP instaladas en el local (en los locales habilitados), a las que la plataforma central accede para obtener las imágenes.
+        \item La estación de garita, que es el navegador del trabajador, desde donde se validan los pases QR y se registran los ingresos y salidas.
+        \item La gestión local de tarifas, personal, cámaras e incidencias, a cargo del administrador del local.
+    \end{itemize}
+    \item \textbf{Nivel 3 --- Usuarios.} Comprende los cuatro perfiles definidos (administrador de plataforma, administrador de local, trabajador del local y conductor). Todos acceden mediante interfaces web adaptadas a sus permisos, bajo un esquema de Control de Acceso Basado en Roles (RBAC).
+\end{itemize}
+
+\subsubsection{Características principales}
+
+Las características que distinguen a Smart-Park como plataforma de estacionamiento inteligente son:
+
+\begin{table}[H]
+\caption{Características Principales del Sistema}
+\begin{tabularx}{\textwidth}{p{3.5cm} X}
+\toprule
+\textbf{Característica} & \textbf{Descripción} \\
+\midrule
+Marketplace multi-tenant & Conecta múltiples estacionamientos afiliados con conductores, cada local opera con autonomía sobre sus datos, tarifas y políticas. \\
+\midrule
+Disponibilidad en tiempo real & Actualización inmediata del estado de espacios mediante WebSocket (WSS), con difusión selectiva por local y por usuario. \\
+\midrule
+Editor de planos 2D (CAD) & Permite al administrador de local dibujar la distribución física del estacionamiento: espacios, muros, accesos, garita y pasos peatonales. \\
+\midrule
+Reservas flexibles & Tres modalidades: estándar (horas/minutos), anticipada (fecha futura) y abono (semanal, mensual o fraccionado). \\
+\midrule
+Pase QR digital & Código QR con temporizador de tolerancia, verificable en una página pública de validación por el personal de garita. \\
+\midrule
+Visión artificial & Detección de vehículos con YOLOv8 y OpenCV, habilitada tras evaluación técnica de cámaras, iluminación y red del local. \\
+\midrule
+Pagos electrónicos & Integración con Culqi (tarjetas, Yape, Plin) y PayPal, con cálculo de comisiones y liquidación automática. \\
+\midrule
+Seguridad integral & RBAC, JWT en cookies HttpOnly, autenticación con Google, PIN administrativo, limitación de intentos y bitácora de auditoría. \\
+\midrule
+PWA responsiva & Interfaz web instalable en cualquier dispositivo, adaptada a los cuatro perfiles de usuario. \\
+\midrule
+Geolocalización y mapas & Búsqueda de estacionamientos mediante Leaflet con capas de calles y satélite, filtros por zona, tipo y tarifa. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsubsection{Componentes del sistema (contenedores)}
+
+La plataforma se compone de los siguientes contenedores lógicos, cada uno con una responsabilidad específica dentro de la arquitectura:
+
+\begin{table}[H]
+\caption{Componentes (Contenedores) del Sistema}
+\begin{tabularx}{\textwidth}{p{3.5cm} p{2.5cm} X}
+\toprule
+\textbf{Contenedor} & \textbf{Tecnología} & \textbf{Responsabilidad} \\
+\midrule
+Aplicación Web (SPA) & React 19 + Vite & Interfaz de usuario responsiva, enrutamiento del lado del cliente, comunicación con la API mediante HTTPS y con el servidor de WebSocket mediante WSS. Instalable como PWA. \\
+\midrule
+API central (Backend) & FastAPI + SQLAlchemy asíncrono & Lógica de negocio, autenticación, autorización, gestión de reservas, pagos, afiliaciones, visión artificial, reportes y auditoría. Expone endpoints REST con JSON. \\
+\midrule
+Servidor de WebSocket & FastAPI (módulo integrado) & Difusión en tiempo real del estado de los espacios, notificaciones instantáneas y eventos de reserva. \\
+\midrule
+Motor de visión artificial & Python + YOLOv8 + OpenCV & Captura periódica de imágenes desde las cámaras IP, detección de vehículos y clasificación del estado de los espacios. \\
+\midrule
+Cola de mensajes & RabbitMQ (CloudAMQP) & Desacopla la lógica de negocio de los procesos asíncronos: notificaciones, liberación de reservas, copias de seguridad y eventos de cámara. \\
+\midrule
+Caché en memoria & Redis (Railway) & Almacena sesiones, tokens de acceso, estado temporal de espacios y resultados de consultas frecuentes. \\
+\midrule
+Base de datos & PostgreSQL (Railway) & Almacenamiento persistente de usuarios, estacionamientos, espacios, reservas, pagos, reseñas, incidencias, auditoría y configuración. \\
+\midrule
+Almacenamiento de archivos & Volumen \texttt{/data} (Railway) & Fotografías de vehículos, evidencias de incidencias, logotipos de locales y copias de seguridad de la base de datos. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Diagrama de Infraestructura}
+
+El diagrama de infraestructura (Figura~2) muestra la distribución física de los componentes del sistema, sus tecnologías base y los protocolos de comunicación entre ellos.
+
+% Aquí debes incluir tu imagen del diagrama de infraestructura:
+% \begin{figure}[H]
+% \caption{Diagrama de Infraestructura del Sistema Smart-Park}
+% \centering
+% \includegraphics[width=0.95\textwidth]{imagenes/diagrama_infraestructura.png}
+% \end{figure}
+% \textit{Nota.} Elaboración propia.
+
+La infraestructura de producción se despliega en Railway con los siguientes servicios:
+
+\begin{itemize}
+    \item \textbf{Servicio principal:} contenedor Docker multi-stage que ejecuta la API (FastAPI con Uvicorn), el servidor WebSocket y el motor de visión artificial. Se expone mediante el dominio personalizado con certificado TLS.
+    \item \textbf{PostgreSQL:} instancia gestionada por Railway con respaldo automático diario y cifrado en reposo.
+    \item \textbf{Redis:} instancia gestionada por Railway, utilizada como caché de sesiones y estado temporal de espacios.
+    \item \textbf{RabbitMQ:} instancia en CloudAMQP (plan gestionado), conectada al servicio principal mediante AMQPS (AMQP cifrado).
+    \item \textbf{Volumen persistente:} montado en \texttt{/data} para almacenar fotografías y copias de seguridad.
+    \item \textbf{CDN y frontend:} la aplicación React se sirve mediante Vercel, conectándose a la API central por HTTPS.
+\end{itemize}

@@ -1,0 +1,40 @@
+% =============================================================================
+% 1. RESPONSABLES
+% =============================================================================
+
+\section{Responsables}
+
+\subsection{Roles y Responsabilidades del Equipo}
+
+El desarrollo de Smart-Park se realizó bajo una modalidad de trabajo colaborativo y horizontal, en la que los cinco integrantes participaron conjuntamente en todas las etapas del proyecto, con una participación del 100\,\% cada uno. Para efectos de la documentación de arquitectura, se identifica a continuación el área de mayor aporte técnico de cada integrante, sin que ello implique responsabilidad exclusiva sobre dicha área.
+
+\begin{table}[H]
+\caption{Roles y Responsabilidades del Equipo}
+\begin{tabularx}{\textwidth}{p{3.2cm} p{3.2cm} X}
+\toprule
+\textbf{Rol} & \textbf{Responsable} & \textbf{Responsabilidades específicas} \\
+\midrule
+Arquitecto de Software & Aspur Yaranga, Jhoel Emilio & Definición de la arquitectura jerárquica en tres niveles (plataforma central, nivel de estacionamiento y usuarios); diseño de la comunicación mediante HTTPS (API REST con JSON), WebSocket seguro (WSS) y mensajería asíncrona (AMQP); elaboración de los diagramas de arquitectura, módulos e interfaces; validación de las decisiones arquitectónicas frente a los requerimientos no funcionales; coordinación técnica general del equipo. \\
+\midrule
+Líder de Desarrollo Backend y Base de Datos & Condori Cotaquispe, Suly Jhomy & Diseño del modelo entidad-relación en PostgreSQL (catorce tablas); definición de tipos de dato, restricciones, llaves primarias y foráneas; validación de la integridad referencial y de los índices de optimización; creación idempotente del esquema y de los datos semilla; apoyo en el levantamiento de los 150 requerimientos funcionales y los 34 no funcionales. \\
+\midrule
+Líder de Infraestructura y Despliegue & Ore Guillén, Dualyk Anatoly & Configuración del despliegue en Railway mediante contenedor Docker multi-stage; definición de las variables de entorno; configuración del volumen \texttt{/data} para fotografías y respaldos; verificación del chequeo de salud (\texttt{/health}) y del dominio de producción; redacción y organización general del informe. \\
+\midrule
+Analista de Procesos y Requerimientos & Ruiz Torres, Carlos Rey & Definición de los objetivos general y específicos, del alcance y de los actores del proyecto; justificación a partir de las encuestas aplicadas a 108 conductores y 21 trabajadores y administradores de estacionamientos; revisión final del documento de arquitectura. \\
+\midrule
+Desarrollador Full Stack & Cusi Huerta, Yoniver & Desarrollo e integración de los módulos del frontend (React 19 con Vite) correspondientes a los cuatro perfiles de usuario; integración frontend-backend mediante la API REST y WebSocket; pruebas funcionales de las principales características del sistema (reservas, pagos y detección automática de vehículos). \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Canales y Herramientas de Coordinación}
+
+La coordinación del equipo se sustentó en las siguientes herramientas y canales de comunicación:
+
+\begin{itemize}
+    \item \textbf{Repositorio de control de versiones:} GitHub, bajo el nombre \texttt{khalyddGIT/smart-park}, rama \texttt{master}, con integración continua mediante GitHub Actions: cada cambio en la rama ejecuta las pruebas automatizadas (Pytest y Playwright) antes de publicarse.
+    \item \textbf{Centro de documentación:} carpeta \texttt{docs} del repositorio, que reúne los informes técnicos, la guía de ejecución local, la guía de despliegue, el esquema de la base de datos, la documentación de seguridad, de respaldos y de visión artificial, y los reportes de avance.
+    \item \textbf{Documentación técnica de la API:} generada automáticamente mediante OpenAPI/Swagger y disponible en la ruta \texttt{/docs} del entorno de desarrollo. En producción se desactiva por seguridad.
+    \item \textbf{Plataforma de despliegue y monitoreo:} Railway, con registro de eventos accesible mediante su interfaz de línea de comandos o su panel de control, y verificación automática de salud del servicio.
+    \item \textbf{Comunicación interna:} grupo de WhatsApp para coordinación diaria, complementado con reuniones semanales de revisión de avance y retrospectiva.
+\end{itemize}
