@@ -34,7 +34,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 % Encabezado institucional a la izquierda
-\fancyhead[L]{\footnotesize\textsc{Escuela de Educación Superior Tecnológica Privada La Pontificia --- Dirección Académica}}
+\fancyhead[L]{\footnotesize ESCUELA DE EDUCACIÓN SUPERIOR TECNOLÓGICA PRIVADA LA PONTIFICIA --- DIRECCIÓN ACADÉMICA}
 % Número de página en la esquina superior derecha
 \fancyhead[R]{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
@@ -42,7 +42,7 @@
 % Aplicar el mismo estilo a las páginas de inicio de sección
 \fancypagestyle{plain}{%
   \fancyhf{}
-  \fancyhead[L]{\footnotesize\textsc{Escuela de Educación Superior Tecnológica Privada La Pontificia --- Dirección Académica}}
+  \fancyhead[L]{\footnotesize ESCUELA DE EDUCACIÓN SUPERIOR TECNOLÓGICA PRIVADA LA PONTIFICIA --- DIRECCIÓN ACADÉMICA}
   \fancyhead[R]{\thepage}
   \renewcommand{\headrulewidth}{0.4pt}
 }
@@ -156,44 +156,60 @@
 
 % ---------- PORTADA -----------------------------------------------------------
 \begin{titlepage}
-\thispagestyle{fancy}
+\thispagestyle{empty}
+
+\begin{minipage}{0.3\textwidth}
+    \includegraphics[height=1.5cm]{imagenes/caratula.png}
+\end{minipage}%
+\begin{minipage}{0.7\textwidth}
+    \raggedleft
+    \footnotesize ESCUELA DE EDUCACIÓN SUPERIOR TECNOLÓGICA PRIVADA LA PONTIFICIA\\
+    DIRECCIÓN ACADÉMICA
+\end{minipage}
+
+\vspace{0.2cm}
+\hrule
+\vspace{0.8cm}
+
 \centering
 \doublespacing
-
-\vspace*{0.5cm}
 
 {\fontsize{12}{14}\selectfont
 \textbf{``AÑO DE LA ESPERANZA Y EL FORTALECIMIENTO DE LA DEMOCRACIA''}
 }
 
-\vspace{1.5cm}
+\vspace{0.5cm}
+
+\includegraphics[width=0.45\textwidth]{imagenes/caratula.png}
+
+\vspace{0.5cm}
 
 {\fontsize{14}{17}\selectfont
 \textbf{INGENIERIA DE SISTEMAS DE INFORMACION}
 }
 
-\vspace{0.8cm}
+\vspace{0.4cm}
 
 {\fontsize{12}{14}\selectfont
 \textbf{CURSO:}\\
 Arquitectura de Software
 }
 
-\vspace{0.8cm}
+\vspace{0.4cm}
 
 {\fontsize{12}{14}\selectfont
 \textbf{SECCION:}\\
 VIII -- ``A''
 }
 
-\vspace{1cm}
+\vspace{0.4cm}
 
 {\fontsize{12}{14}\selectfont
 \textbf{DOCENTE:}\\
 Rodriguez Abad, Jose Luis
 }
 
-\vspace{1cm}
+\vspace{0.4cm}
 
 {\fontsize{12}{14}\selectfont
 \textbf{INTEGRANTES}\\
@@ -211,15 +227,35 @@ Ruiz Torres, Carlos Rey
 }
 
 \end{titlepage}
+\stepcounter{page} % Para que el índice comience en la página 2
 
-% ---------- ÍNDICE -----------------------------------------------------------
+% ---------- ÍNDICES -----------------------------------------------------------
 \newpage
 \thispagestyle{fancy}
+\renewcommand{\contentsname}{ÍNDICE}
 \begin{center}
   {\fontsize{12}{14}\selectfont\textbf{ÍNDICE}}
 \end{center}
 \vspace{6pt}
 \tableofcontents
+
+\newpage
+\thispagestyle{fancy}
+\renewcommand{\listtablename}{ÍNDICE DE TABLAS}
+\begin{center}
+  {\fontsize{12}{14}\selectfont\textbf{ÍNDICE DE TABLAS}}
+\end{center}
+\vspace{6pt}
+\listoftables
+
+\newpage
+\thispagestyle{fancy}
+\renewcommand{\listfigurename}{ÍNDICE DE FIGURAS}
+\begin{center}
+  {\fontsize{12}{14}\selectfont\textbf{ÍNDICE DE FIGURAS}}
+\end{center}
+\vspace{6pt}
+\listoffigures
 
 % =============================================================================
 %                          CUERPO DEL DOCUMENTO
