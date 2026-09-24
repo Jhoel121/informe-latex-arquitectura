@@ -31,19 +31,23 @@
 
 % --- Encabezados y paginación ---
 \usepackage{fancyhdr}
+\setlength{\headheight}{45pt}
 \pagestyle{fancy}
 \fancyhf{}
-% Encabezado institucional a la izquierda
-\fancyhead[L]{\footnotesize ESCUELA DE EDUCACIÓN SUPERIOR TECNOLÓGICA PRIVADA LA PONTIFICIA --- DIRECCIÓN ACADÉMICA}
-% Número de página en la esquina superior derecha
-\fancyhead[R]{\thepage}
+% Encabezado institucional a la izquierda y derecha
+\fancyhead[L]{\raisebox{-0.5\height}{\includegraphics[height=1.2cm]{imagenes/caratula.png}}}
+\fancyhead[R]{%
+  \parbox[b]{12cm}{\raggedleft\footnotesize\textbf{ESCUELA DE EDUCACIÓN SUPERIOR TECNOLÓGICA PRIVADA LA PONTIFICIA}\\\textbf{DIRECCIÓN ACADÉMICA}} \hspace{0.5cm} \thepage
+}
 \renewcommand{\headrulewidth}{0.4pt}
 
 % Aplicar el mismo estilo a las páginas de inicio de sección
 \fancypagestyle{plain}{%
   \fancyhf{}
-  \fancyhead[L]{\footnotesize ESCUELA DE EDUCACIÓN SUPERIOR TECNOLÓGICA PRIVADA LA PONTIFICIA --- DIRECCIÓN ACADÉMICA}
-  \fancyhead[R]{\thepage}
+  \fancyhead[L]{\raisebox{-0.5\height}{\includegraphics[height=1.2cm]{imagenes/caratula.png}}}
+  \fancyhead[R]{%
+    \parbox[b]{12cm}{\raggedleft\footnotesize\textbf{ESCUELA DE EDUCACIÓN SUPERIOR TECNOLÓGICA PRIVADA LA PONTIFICIA}\\\textbf{DIRECCIÓN ACADÉMICA}} \hspace{0.5cm} \thepage
+  }
   \renewcommand{\headrulewidth}{0.4pt}
 }
 
@@ -158,13 +162,13 @@
 \begin{titlepage}
 \thispagestyle{empty}
 
-\begin{minipage}{0.3\textwidth}
+\begin{minipage}[b]{0.2\textwidth}
     \includegraphics[height=1.5cm]{imagenes/caratula.png}
 \end{minipage}%
-\begin{minipage}{0.7\textwidth}
+\begin{minipage}[b]{0.8\textwidth}
     \raggedleft
-    \footnotesize ESCUELA DE EDUCACIÓN SUPERIOR TECNOLÓGICA PRIVADA LA PONTIFICIA\\
-    DIRECCIÓN ACADÉMICA
+    \footnotesize\textbf{ESCUELA DE EDUCACIÓN SUPERIOR TECNOLÓGICA PRIVADA LA PONTIFICIA}\\
+    \footnotesize\textbf{DIRECCIÓN ACADÉMICA}
 \end{minipage}
 
 \vspace{0.2cm}
@@ -233,28 +237,16 @@ Ruiz Torres, Carlos Rey
 \newpage
 \thispagestyle{fancy}
 \renewcommand{\contentsname}{ÍNDICE}
-\begin{center}
-  {\fontsize{12}{14}\selectfont\textbf{ÍNDICE}}
-\end{center}
-\vspace{6pt}
 \tableofcontents
 
 \newpage
 \thispagestyle{fancy}
 \renewcommand{\listtablename}{ÍNDICE DE TABLAS}
-\begin{center}
-  {\fontsize{12}{14}\selectfont\textbf{ÍNDICE DE TABLAS}}
-\end{center}
-\vspace{6pt}
 \listoftables
 
 \newpage
 \thispagestyle{fancy}
 \renewcommand{\listfigurename}{ÍNDICE DE FIGURAS}
-\begin{center}
-  {\fontsize{12}{14}\selectfont\textbf{ÍNDICE DE FIGURAS}}
-\end{center}
-\vspace{6pt}
 \listoffigures
 
 % =============================================================================
