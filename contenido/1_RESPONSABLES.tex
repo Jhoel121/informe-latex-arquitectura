@@ -8,12 +8,26 @@
 
 El desarrollo de Smart-Park se realizó bajo una modalidad de trabajo colaborativo y horizontal, en la que los cinco integrantes participaron conjuntamente en todas las etapas del proyecto, con una participación del 100\,\% cada uno. Para efectos de la documentación de arquitectura, se identifica a continuación el área de mayor aporte técnico de cada integrante, sin que ello implique responsabilidad exclusiva sobre dicha área.
 
-\begin{table}[H]
-\caption{Roles y Responsabilidades del Equipo}
-\begin{tabularx}{\textwidth}{p{3.2cm} p{3.2cm} X}
+\begin{longtable}{p{3.2cm} p{3.2cm} p{8cm}}
+\caption{Roles y Responsabilidades del Equipo} \\
 \toprule
 \textbf{Rol} & \textbf{Responsable} & \textbf{Responsabilidades específicas} \\
 \midrule
+\endfirsthead
+
+\caption[]{Roles y Responsabilidades del Equipo (continuación)} \\
+\toprule
+\textbf{Rol} & \textbf{Responsable} & \textbf{Responsabilidades específicas} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{3}{r}{\footnotesize\textit{Continúa en la siguiente página}} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
 Arquitecto de Software & Aspur Yaranga, Jhoel Emilio & Definición de la arquitectura jerárquica en tres niveles (plataforma central, nivel de estacionamiento y usuarios); diseño de la comunicación mediante HTTPS (API REST con JSON), WebSocket seguro (WSS) y mensajería asíncrona (AMQP); elaboración de los diagramas de arquitectura, módulos e interfaces; validación de las decisiones arquitectónicas frente a los requerimientos no funcionales; coordinación técnica general del equipo. \\
 \midrule
 Líder de Desarrollo Backend y Base de Datos & Condori Cotaquispe, Suly Jhomy & Diseño del modelo entidad-relación en PostgreSQL (catorce tablas); definición de tipos de dato, restricciones, llaves primarias y foráneas; validación de la integridad referencial y de los índices de optimización; creación idempotente del esquema y de los datos semilla; apoyo en el levantamiento de los 150 requerimientos funcionales y los 34 no funcionales. \\
@@ -23,9 +37,9 @@ Líder de Infraestructura y Despliegue & Ore Guillén, Dualyk Anatoly & Configur
 Analista de Procesos y Requerimientos & Ruiz Torres, Carlos Rey & Definición de los objetivos general y específicos, del alcance y de los actores del proyecto; justificación a partir de las encuestas aplicadas a 108 conductores y 21 trabajadores y administradores de estacionamientos; revisión final del documento de arquitectura. \\
 \midrule
 Desarrollador Full Stack & Cusi Huerta, Yoniver & Desarrollo e integración de los módulos del frontend (React 19 con Vite) correspondientes a los cuatro perfiles de usuario; integración frontend-backend mediante la API REST y WebSocket; pruebas funcionales de las principales características del sistema (reservas, pagos y detección automática de vehículos). \\
-\bottomrule
-\end{tabularx}
-\end{table}
+\end{longtable}
+
+\textit{Nota.} Todos los integrantes participaron en todas las etapas del proyecto con una contribución equitativa del 100\,\%. Los roles descritos indican el área de mayor aporte técnico de cada miembro.
 
 \subsection{Canales y Herramientas de Coordinación}
 

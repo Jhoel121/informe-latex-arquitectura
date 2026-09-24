@@ -37,12 +37,26 @@ Smart-Park es una plataforma web de arquitectura tipo marketplace, con diseño c
 
 Las características que distinguen a Smart-Park como plataforma de estacionamiento inteligente son:
 
-\begin{table}[H]
-\caption{Características Principales del Sistema}
-\begin{tabularx}{\textwidth}{p{3.5cm} X}
+\begin{longtable}{p{3.5cm} p{10.5cm}}
+\caption{Características Principales del Sistema} \\
 \toprule
 \textbf{Característica} & \textbf{Descripción} \\
 \midrule
+\endfirsthead
+
+\caption[]{Características Principales del Sistema (continuación)} \\
+\toprule
+\textbf{Característica} & \textbf{Descripción} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{2}{r}{\footnotesize\textit{Continúa en la siguiente página}} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
 Marketplace multi-tenant & Conecta múltiples estacionamientos afiliados con conductores, cada local opera con autonomía sobre sus datos, tarifas y políticas. \\
 \midrule
 Disponibilidad en tiempo real & Actualización inmediata del estado de espacios mediante WebSocket (WSS), con difusión selectiva por local y por usuario. \\
@@ -62,20 +76,34 @@ Seguridad integral & RBAC, JWT en cookies HttpOnly, autenticación con Google, P
 PWA responsiva & Interfaz web instalable en cualquier dispositivo, adaptada a los cuatro perfiles de usuario. \\
 \midrule
 Geolocalización y mapas & Búsqueda de estacionamientos mediante Leaflet con capas de calles y satélite, filtros por zona, tipo y tarifa. \\
-\bottomrule
-\end{tabularx}
-\end{table}
+\end{longtable}
+
+\textit{Nota.} PWA = Progressive Web Application. RBAC = Role-Based Access Control. JWT = JSON Web Token. WSS = WebSocket Secure. CAD = Computer-Aided Design.
 
 \subsubsection{Componentes del sistema (contenedores)}
 
 La plataforma se compone de los siguientes contenedores lógicos, cada uno con una responsabilidad específica dentro de la arquitectura:
 
-\begin{table}[H]
-\caption{Componentes (Contenedores) del Sistema}
-\begin{tabularx}{\textwidth}{p{3.5cm} p{2.5cm} X}
+\begin{longtable}{p{3cm} p{2.8cm} p{8cm}}
+\caption{Componentes (Contenedores) del Sistema} \\
 \toprule
 \textbf{Contenedor} & \textbf{Tecnología} & \textbf{Responsabilidad} \\
 \midrule
+\endfirsthead
+
+\caption[]{Componentes (Contenedores) del Sistema (continuación)} \\
+\toprule
+\textbf{Contenedor} & \textbf{Tecnología} & \textbf{Responsabilidad} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{3}{r}{\footnotesize\textit{Continúa en la siguiente página}} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
 Aplicación Web (SPA) & React 19 + Vite & Interfaz de usuario responsiva, enrutamiento del lado del cliente, comunicación con la API mediante HTTPS y con el servidor de WebSocket mediante WSS. Instalable como PWA. \\
 \midrule
 API central (Backend) & FastAPI + SQLAlchemy asíncrono & Lógica de negocio, autenticación, autorización, gestión de reservas, pagos, afiliaciones, visión artificial, reportes y auditoría. Expone endpoints REST con JSON. \\
@@ -91,20 +119,21 @@ Caché en memoria & Redis (Railway) & Almacena sesiones, tokens de acceso, estad
 Base de datos & PostgreSQL (Railway) & Almacenamiento persistente de usuarios, estacionamientos, espacios, reservas, pagos, reseñas, incidencias, auditoría y configuración. \\
 \midrule
 Almacenamiento de archivos & Volumen \texttt{/data} (Railway) & Fotografías de vehículos, evidencias de incidencias, logotipos de locales y copias de seguridad de la base de datos. \\
-\bottomrule
-\end{tabularx}
-\end{table}
+\end{longtable}
+
+\textit{Nota.} SPA = Single Page Application. AMQP = Advanced Message Queuing Protocol. Cada contenedor se ejecuta como un proceso independiente o un servicio gestionado en la infraestructura de Railway.
 
 \subsection{Diagrama de Infraestructura}
 
-El diagrama de infraestructura (Figura~2) muestra la distribución física de los componentes del sistema, sus tecnologías base y los protocolos de comunicación entre ellos.
+El diagrama de infraestructura muestra la distribución física de los componentes del sistema, sus tecnologías base y los protocolos de comunicación entre ellos.
 
-% Aquí debes incluir tu imagen del diagrama de infraestructura:
+% --- Descomentar cuando se disponga de la imagen ---
 % \begin{figure}[H]
 % \caption{Diagrama de Infraestructura del Sistema Smart-Park}
 % \centering
 % \includegraphics[width=0.95\textwidth]{imagenes/diagrama_infraestructura.png}
 % \end{figure}
+%
 % \textit{Nota.} Elaboración propia.
 
 La infraestructura de producción se despliega en Railway con los siguientes servicios:

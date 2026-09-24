@@ -18,12 +18,26 @@ El estilo arquitectónico adoptado por Smart-Park es una \textbf{arquitectura de
 
 La justificación de este estilo se basa en los siguientes \textit{drivers} de arquitectura:
 
-\begin{table}[H]
-\caption{Justificación del Estilo Arquitectónico}
-\begin{tabularx}{\textwidth}{p{3cm} X}
+\begin{longtable}{p{3cm} p{11cm}}
+\caption{Justificación del Estilo Arquitectónico} \\
 \toprule
 \textbf{Driver} & \textbf{Cómo lo satisface el estilo} \\
 \midrule
+\endfirsthead
+
+\caption[]{Justificación del Estilo Arquitectónico (continuación)} \\
+\toprule
+\textbf{Driver} & \textbf{Cómo lo satisface el estilo} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{2}{r}{\footnotesize\textit{Continúa en la siguiente página}} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
 Escalabilidad & La separación en capas permite escalar horizontalmente la capa de aplicación (múltiples réplicas del contenedor) y verticalmente la capa de datos (PostgreSQL con mayor CPU/RAM). La cola de mensajes absorbe picos de carga sin afectar la API. \\
 \midrule
 Disponibilidad & Los procesos asíncronos desacoplados mediante RabbitMQ aseguran que un fallo en el motor de visión artificial o en el servicio de notificaciones no derrumbe la API central. \\
@@ -33,20 +47,34 @@ Seguridad & La capa de aplicación centraliza la autenticación y autorización 
 Mantenibilidad & La separación en capas y módulos permite que el equipo modifique un componente sin afectar los demás. Los contratos de interfase (JSON/REST) formalizan la comunicación. \\
 \midrule
 Rendimiento & Redis como caché reduce la latencia de las consultas frecuentes. WebSocket elimina la necesidad de \textit{polling} para la actualización en tiempo real. \\
-\bottomrule
-\end{tabularx}
-\end{table}
+\end{longtable}
+
+\textit{Nota.} RBAC = Role-Based Access Control. JWT = JSON Web Token. Los drivers de arquitectura se detallan en la sección 8.5.2.
 
 \subsubsection{Patrones Complementarios del Estilo Arquitectónico}
 
 El estilo arquitectónico principal se complementa con los siguientes patrones:
 
-\begin{table}[H]
-\caption{Patrones Complementarios del Estilo Arquitectónico}
-\begin{tabularx}{\textwidth}{p{3.5cm} X}
+\begin{longtable}{p{3.5cm} p{10.5cm}}
+\caption{Patrones Complementarios del Estilo Arquitectónico} \\
 \toprule
 \textbf{Patrón} & \textbf{Aplicación en Smart-Park} \\
 \midrule
+\endfirsthead
+
+\caption[]{Patrones Complementarios del Estilo Arquitectónico (continuación)} \\
+\toprule
+\textbf{Patrón} & \textbf{Aplicación en Smart-Park} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{2}{r}{\footnotesize\textit{Continúa en la siguiente página}} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
 API Gateway & La API central actúa como punto de entrada único para todos los clientes. Centraliza la autenticación, la autorización, la validación de datos y el enrutamiento a los módulos internos. \\
 \midrule
 Publish-Subscribe & Los eventos del sistema (reservas, notificaciones, detecciones de cámara) se publican en intercambios de RabbitMQ. Los consumidores suscritos procesan los eventos de forma independiente. \\
@@ -58,21 +86,35 @@ Cache-Aside & Antes de consultar PostgreSQL, la API verifica si el dato existe e
 Circuit Breaker & Las llamadas a servicios externos (pasarelas de pago, cámaras IP) implementan un \textit{circuit breaker} que interrumpe los reintentos cuando el servicio externo no responde, evitando la cascada de fallos. \\
 \midrule
 Observer (WebSocket) & El servidor de WebSocket implementa el patrón observador: los clientes se suscriben a canales por local, y el servidor notifica a todos los suscriptores cuando el estado de un espacio cambia. \\
-\bottomrule
-\end{tabularx}
-\end{table}
+\end{longtable}
+
+\textit{Nota.} CQRS = Command Query Responsibility Segregation. Los patrones se basan en las referencias de Hohpe y Woolf (2003) y Gamma et al. (1994).
 
 \subsection{Frameworks}
 
 Los frameworks y bibliotecas utilizados en la construcción del sistema se seleccionaron considerando la madurez del ecosistema, la documentación disponible, la compatibilidad con las decisiones de arquitectura y la experiencia del equipo de desarrollo.
 
-\begin{table}[H]
-\caption{Frameworks y Bibliotecas del Sistema}
-\begin{tabularx}{\textwidth}{p{3cm} p{2cm} X}
+\begin{longtable}{p{3cm} p{2cm} p{9cm}}
+\caption{Frameworks y Bibliotecas del Sistema} \\
 \toprule
 \textbf{Framework / Biblioteca} & \textbf{Capa} & \textbf{Justificación} \\
 \midrule
-React 19 & Presentación & Biblioteca de componentes declarativos con DOM virtual, amplio ecosistema y soporte a largo plazo. Permite construir interfaces dinámicas e interactivas con estado reactivo (Meta, 2024). \\
+\endfirsthead
+
+\caption[]{Frameworks y Bibliotecas del Sistema (continuación)} \\
+\toprule
+\textbf{Framework / Biblioteca} & \textbf{Capa} & \textbf{Justificación} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{3}{r}{\footnotesize\textit{Continúa en la siguiente página}} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
+React 19 & Presentación & Biblioteca de componentes declarativos con DOM virtual, amplio ecosistema y soporte a largo plazo. Permite construir interfaces dinámicas e interactivas con estado reactivo (Meta Platforms, Inc., 2024). \\
 \midrule
 Vite 6 & Presentación & Empaquetador de módulos con recarga en caliente (HMR) instantánea, compilación rápida basada en esbuild y Rollup, y soporte nativo para TypeScript y JSX. \\
 \midrule
@@ -82,35 +124,49 @@ Leaflet + React-Leaflet & Presentación & Biblioteca de mapas interactivos de c�
 \midrule
 FastAPI 0.115 & Aplicación & Framework web asíncrono de alto rendimiento para Python, con validación automática de datos (Pydantic), documentación OpenAPI generada y soporte nativo para WebSocket (Ramírez, 2018). \\
 \midrule
-SQLAlchemy 2.0 & Aplicación & ORM y toolkit SQL para Python con soporte asíncrono (\texttt{asyncio}), modelo declarativo y gestión de sesiones. \\
+SQLAlchemy 2.0 & Aplicación & ORM y toolkit SQL para Python con soporte asíncrono (\texttt{asyncio}), modelo declarativo y gestión de sesiones (SQLAlchemy, 2024). \\
 \midrule
 Pydantic 2.0 & Aplicación & Validación y serialización de datos mediante modelos tipados, con integración nativa en FastAPI. \\
 \midrule
 Uvicorn & Aplicación & Servidor ASGI de alto rendimiento basado en \texttt{uvloop} y \texttt{httptools}, compatible con FastAPI. \\
 \midrule
-YOLOv8 (Ultralytics) & Servicios locales & Modelo de detección de objetos en tiempo real, preentrenado en COCO, ajustable para la detección de vehículos. \\
+YOLOv8 (Ultralytics) & Servicios locales & Modelo de detección de objetos en tiempo real, preentrenado en COCO, ajustable para la detección de vehículos (Ultralytics, 2024). \\
 \midrule
 OpenCV & Servicios locales & Biblioteca de visión artificial de código abierto, utilizada como respaldo y para el preprocesamiento de imágenes. \\
 \midrule
-RabbitMQ (Pika) & Mensajería & Cliente AMQP para Python que gestiona la conexión, los intercambios y las colas de mensajes. \\
+RabbitMQ (Pika) & Mensajería & Cliente AMQP para Python que gestiona la conexión, los intercambios y las colas de mensajes (Pivotal Software, Inc., 2024). \\
 \midrule
-Redis (redis-py) & Caché & Cliente Redis asíncrono para Python, utilizado para operaciones de caché, sesiones y contadores. \\
+Redis (redis-py) & Caché & Cliente Redis asíncrono para Python, utilizado para operaciones de caché, sesiones y contadores (Redis Ltd., 2024). \\
 \midrule
-Docker & Infraestructura & Contenedorización del backend con imagen multi-stage para optimizar el tamaño y la seguridad del contenedor de producción. \\
-\bottomrule
-\end{tabularx}
-\end{table}
+Docker & Infraestructura & Contenedorización del backend con imagen multi-stage para optimizar el tamaño y la seguridad del contenedor de producción (Docker, Inc., 2024). \\
+\end{longtable}
+
+\textit{Nota.} ORM = Object-Relational Mapping. ASGI = Asynchronous Server Gateway Interface. HMR = Hot Module Replacement. COCO = Common Objects in Context.
 
 \subsection{Patrones de Diseño}
 
 Los patrones de diseño aplicados en Smart-Park resuelven problemas recurrentes de diseño orientado a objetos y de arquitectura de software. Se clasifican según su propósito:
 
-\begin{table}[H]
-\caption{Patrones de Diseño Aplicados}
-\begin{tabularx}{\textwidth}{p{2.5cm} p{2.5cm} X}
+\begin{longtable}{p{2.5cm} p{2.5cm} p{9cm}}
+\caption{Patrones de Diseño Aplicados} \\
 \toprule
 \textbf{Patrón} & \textbf{Categoría} & \textbf{Aplicación en Smart-Park} \\
 \midrule
+\endfirsthead
+
+\caption[]{Patrones de Diseño Aplicados (continuación)} \\
+\toprule
+\textbf{Patrón} & \textbf{Categoría} & \textbf{Aplicación en Smart-Park} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{3}{r}{\footnotesize\textit{Continúa en la siguiente página}} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
 Repository & Estructural & Cada entidad del dominio (reservas, usuarios, estacionamientos, espacios) tiene un repositorio que encapsula las consultas a PostgreSQL mediante SQLAlchemy. La capa de servicios de negocio consume los repositorios sin conocer los detalles del ORM (Fowler, 2002). \\
 \midrule
 Service Layer & Estructural & La lógica de negocio se organiza en servicios (\texttt{ReservaService}, \texttt{PagoService}, \texttt{EspacioService}) que orquestan las operaciones entre repositorios, la cola de mensajes y los servicios externos. \\
@@ -125,9 +181,7 @@ Singleton & Creacional & Las conexiones a la base de datos, a Redis y a RabbitMQ
 \midrule
 Decorator & Estructural & Los middleware de FastAPI (\texttt{@require\_role}, \texttt{@rate\_limit}, \texttt{@audit\_log}) se implementan como decoradores que envuelven los endpoints con lógica transversal (autorización, limitación de intentos, auditoría). \\
 \midrule
-DTO (Data Transfer Object) & Estructural & Los modelos Pydantic (\texttt{ReservaCreate}, \texttt{ReservaResponse}, \texttt{PagoRequest}) actúan como DTOs que validan y serializan los datos de entrada y salida de la API, separando la representación externa de las entidades internas del dominio. \\
-\bottomrule
-\end{tabularx}
-\end{table}
+DTO & Estructural & Los modelos Pydantic (\texttt{ReservaCreate}, \texttt{ReservaResponse}, \texttt{PagoRequest}) actúan como Data Transfer Objects que validan y serializan los datos de entrada y salida de la API, separando la representación externa de las entidades internas del dominio. \\
+\end{longtable}
 
-La combinación de estos patrones garantiza una base de código mantenible, extensible y alineada con los principios SOLID de diseño orientado a objetos (Martin, 2017).
+\textit{Nota.} DTO = Data Transfer Object. ORM = Object-Relational Mapping. Los patrones se basan en las referencias de Gamma et al. (1994), Fowler (2002) y Martin (2017). La combinación de estos patrones garantiza una base de código mantenible, extensible y alineada con los principios SOLID.

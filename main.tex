@@ -23,6 +23,9 @@
 \usepackage{indentfirst}
 \setlength{\parindent}{1.27cm}
 
+% --- Sin espacios extra antes/después de párrafos (APA 7) ---
+\setlength{\parskip}{0pt}
+
 % --- Alineación a la izquierda sin justificar (APA 7) ---
 \usepackage[document]{ragged2e}
 
@@ -30,31 +33,35 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[R]{\thepage}          % Número de página en la esquina superior derecha
-\renewcommand{\headrulewidth}{0pt}
+% Encabezado institucional a la izquierda
+\fancyhead[L]{\footnotesize\textsc{Escuela de Educación Superior Tecnológica Privada La Pontificia --- Dirección Académica}}
+% Número de página en la esquina superior derecha
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
 
 % Aplicar el mismo estilo a las páginas de inicio de sección
 \fancypagestyle{plain}{%
   \fancyhf{}
+  \fancyhead[L]{\footnotesize\textsc{Escuela de Educación Superior Tecnológica Privada La Pontificia --- Dirección Académica}}
   \fancyhead[R]{\thepage}
-  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\headrulewidth}{0.4pt}
 }
 
-% --- Títulos numerados (según solicitud del usuario: 1_TITULO) ---
+% --- Títulos numerados ---
 \usepackage{titlesec}
 
 \renewcommand{\thesection}{\arabic{section}}
 \renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
 \renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
 
-% Nivel 1 — Centrado, Negrita, Título
+% Nivel 1 — Centrado, Negrita
 \titleformat{\section}
   [block]
   {\normalfont\fontsize{12}{14}\bfseries\filcenter}
   {\thesection.}
   {0.5em}
   {\MakeUppercase}
-\titlespacing*{\section}{0pt}{12pt}{6pt}
+\titlespacing*{\section}{0pt}{24pt}{12pt}
 
 % Nivel 2 — Alineado a la izquierda, Negrita
 \titleformat{\subsection}
@@ -63,7 +70,7 @@
   {\thesubsection.}
   {0.5em}
   {}
-\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+\titlespacing*{\subsection}{0pt}{24pt}{12pt}
 
 % Nivel 3 — Alineado a la izquierda, Negrita, Cursiva
 \titleformat{\subsubsection}
@@ -72,7 +79,7 @@
   {\thesubsubsection.}
   {0.5em}
   {}
-\titlespacing*{\subsubsection}{0pt}{12pt}{6pt}
+\titlespacing*{\subsubsection}{0pt}{24pt}{12pt}
 
 % Nivel 4 — Sangría 1.27 cm, Negrita, termina con punto, texto en línea
 \titleformat{\paragraph}
@@ -81,7 +88,7 @@
   {}
   {0pt}
   {}[.]
-\titlespacing*{\paragraph}{1.27cm}{12pt}{0.5em}
+\titlespacing*{\paragraph}{1.27cm}{24pt}{0.5em}
 
 % Nivel 5 — Sangría 1.27 cm, Negrita cursiva, termina con punto, texto en línea
 \titleformat{\subparagraph}
@@ -90,35 +97,45 @@
   {}
   {0pt}
   {}[.]
-\titlespacing*{\subparagraph}{1.27cm}{12pt}{0.5em}
+\titlespacing*{\subparagraph}{1.27cm}{24pt}{0.5em}
 
 % --- Tablas y figuras ---
 \usepackage{graphicx}
-\usepackage{booktabs}           % Líneas horizontales profesionales
+\usepackage{booktabs}           % Líneas horizontales profesionales (sin verticales)
 \usepackage{longtable}          % Tablas que cruzan páginas
 \usepackage{tabularx}
 \usepackage{array}
 \usepackage{float}
 
-% Formato de caption APA 7: "Tabla 1" en negrita, título en cursiva debajo
+% Formato de caption APA 7:
+%   Tabla 1 (negrita, alineado izquierda)
+%   Título en cursiva (línea siguiente)
 \usepackage{caption}
-\DeclareCaptionLabelFormat{apatable}{\textbf{#1 #2}}
-\DeclareCaptionLabelFormat{apafigure}{\textbf{#1 #2}}
+\DeclareCaptionLabelFormat{apabold}{\textbf{#1 #2}}
 \captionsetup[table]{
-  labelformat=apatable,
+  labelformat=apabold,
   labelsep=newline,
   justification=raggedright,
   singlelinecheck=false,
-  font={doublespacing},
-  textfont={it}
+  textfont={it},
+  skip=6pt
 }
 \captionsetup[figure]{
-  labelformat=apafigure,
+  labelformat=apabold,
   labelsep=newline,
   justification=raggedright,
   singlelinecheck=false,
-  font={doublespacing},
-  textfont={it}
+  textfont={it},
+  skip=6pt
+}
+% Mismo formato para longtable
+\captionsetup[longtable]{
+  labelformat=apabold,
+  labelsep=newline,
+  justification=raggedright,
+  singlelinecheck=false,
+  textfont={it},
+  skip=6pt
 }
 
 % --- Listas ---
@@ -129,37 +146,80 @@
 \usepackage[hidelinks]{hyperref}
 \urlstyle{same}                 % URL con la misma fuente del documento
 
-% --- Color (para portada) ---
+% --- Color ---
 \usepackage{xcolor}
-
-% --- Para la portada con imagen ---
-\usepackage{tikz}
 
 % =============================================================================
 %                          INICIO DEL DOCUMENTO
 % =============================================================================
 \begin{document}
 
-% ---------- PORTADA (versión institucional según imagen proporcionada) --------
+% ---------- PORTADA -----------------------------------------------------------
 \begin{titlepage}
 \thispagestyle{fancy}
-\begin{center}
+\centering
+\doublespacing
 
-% --- Logo / imagen de carátula ---
-% Si deseas usar la imagen completa de la carátula:
-\includegraphics[width=\textwidth]{imagenes/caratula.png}
+\vspace*{0.5cm}
 
-\end{center}
+{\fontsize{12}{14}\selectfont
+\textbf{``AÑO DE LA ESPERANZA Y EL FORTALECIMIENTO DE LA DEMOCRACIA''}
+}
+
+\vspace{1.5cm}
+
+{\fontsize{14}{17}\selectfont
+\textbf{INGENIERIA DE SISTEMAS DE INFORMACION}
+}
+
+\vspace{0.8cm}
+
+{\fontsize{12}{14}\selectfont
+\textbf{CURSO:}\\
+Arquitectura de Software
+}
+
+\vspace{0.8cm}
+
+{\fontsize{12}{14}\selectfont
+\textbf{SECCION:}\\
+VIII -- ``A''
+}
+
+\vspace{1cm}
+
+{\fontsize{12}{14}\selectfont
+\textbf{DOCENTE:}\\
+Rodriguez Abad, Jose Luis
+}
+
+\vspace{1cm}
+
+{\fontsize{12}{14}\selectfont
+\textbf{INTEGRANTES}\\
+Aspur Yaranga, Jhoel Emilio\\
+Condori Cotaquispe, Suly Jhomy\\
+Cusi Huerta, Yoniver -- 100\%\\
+Ore Guillen, Dualyk Anatoly\\
+Ruiz Torres, Carlos Rey
+}
+
+\vfill
+
+{\fontsize{12}{14}\selectfont
+24 de septiembre de 2026
+}
+
 \end{titlepage}
 
 % ---------- ÍNDICE -----------------------------------------------------------
 \newpage
+\thispagestyle{fancy}
 \begin{center}
-  \textbf{\fontsize{12}{14}\selectfont ÍNDICE}
+  {\fontsize{12}{14}\selectfont\textbf{ÍNDICE}}
 \end{center}
 \vspace{6pt}
 \tableofcontents
-\thispagestyle{fancy}
 
 % =============================================================================
 %                          CUERPO DEL DOCUMENTO

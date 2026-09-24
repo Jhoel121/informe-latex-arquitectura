@@ -10,12 +10,26 @@ Las vistas arquitectónicas permiten describir el sistema desde diferentes persp
 
 La vista lógica describe la organización interna del sistema en capas funcionales. Smart-Park adopta una arquitectura en capas (\textit{layered architecture}) que separa las responsabilidades de forma vertical:
 
-\begin{table}[H]
-\caption{Capas de la Arquitectura Lógica}
-\begin{tabularx}{\textwidth}{p{3cm} p{3cm} X}
+\begin{longtable}{p{3cm} p{3cm} p{8cm}}
+\caption{Capas de la Arquitectura Lógica} \\
 \toprule
 \textbf{Capa} & \textbf{Tecnología} & \textbf{Responsabilidad} \\
 \midrule
+\endfirsthead
+
+\caption[]{Capas de la Arquitectura Lógica (continuación)} \\
+\toprule
+\textbf{Capa} & \textbf{Tecnología} & \textbf{Responsabilidad} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{3}{r}{\footnotesize\textit{Continúa en la siguiente página}} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
 Presentación & React 19 + Vite & Interfaz de usuario, enrutamiento SPA, comunicación HTTP/WSS con el backend. \\
 \midrule
 Aplicación (API) & FastAPI + SQLAlchemy & Lógica de negocio, autenticación, autorización, orquestación de servicios. \\
@@ -25,9 +39,9 @@ Servicios locales & Python (YOLOv8, OpenCV) & Motor de visión artificial, proce
 Mensajería y caché & RabbitMQ + Redis & Comunicación asíncrona entre servicios, caché de sesiones y estado temporal. \\
 \midrule
 Datos & PostgreSQL + Volumen & Almacenamiento persistente relacional y almacenamiento de archivos binarios. \\
-\bottomrule
-\end{tabularx}
-\end{table}
+\end{longtable}
+
+\textit{Nota.} La comunicación entre capas es descendente y unidireccional: cada capa solo depende de la capa inmediatamente inferior (Bass et al., 2021).
 
 \subsubsection{Capa de presentación (React 19 + Vite)}
 
@@ -143,20 +157,35 @@ La vista de comportamiento describe cómo los componentes del sistema interactú
 
 La vista física describe la topología de despliegue del sistema, es decir, la distribución de los artefactos de software sobre los nodos de hardware y servicios en la nube.
 
-% Aquí debes incluir tu imagen del diagrama de despliegue:
+% --- Descomentar cuando se disponga de la imagen ---
 % \begin{figure}[H]
 % \caption{Diagrama de Despliegue del Sistema Smart-Park}
 % \centering
 % \includegraphics[width=0.95\textwidth]{imagenes/diagrama_despliegue.png}
 % \end{figure}
+%
 % \textit{Nota.} Elaboración propia.
 
-\begin{table}[H]
-\caption{Nodos de Despliegue}
-\begin{tabularx}{\textwidth}{p{3cm} p{3cm} X}
+\begin{longtable}{p{3cm} p{3cm} p{8cm}}
+\caption{Nodos de Despliegue} \\
 \toprule
 \textbf{Nodo} & \textbf{Proveedor} & \textbf{Artefactos desplegados} \\
 \midrule
+\endfirsthead
+
+\caption[]{Nodos de Despliegue (continuación)} \\
+\toprule
+\textbf{Nodo} & \textbf{Proveedor} & \textbf{Artefactos desplegados} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{3}{r}{\footnotesize\textit{Continúa en la siguiente página}} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
 Servidor de aplicación & Railway (Docker) & Contenedor con la API (FastAPI + Uvicorn), el servidor WebSocket, el motor de visión artificial (YOLOv8) y los procesos automáticos. \\
 \midrule
 Base de datos & Railway (PostgreSQL) & Instancia PostgreSQL gestionada con respaldo automático y cifrado en reposo. \\
@@ -171,10 +200,10 @@ Almacenamiento & Railway (Volumen) & Volumen persistente montado en \texttt{/dat
 \midrule
 Dispositivos de usuario & Navegadores web & Chrome, Firefox, Safari, Edge en computadoras, tablets y teléfonos. Conexión HTTPS a Vercel y WSS al backend. \\
 \midrule
-Cámaras IP & Red local de cada estacionamiento & Cámaras que transmiten imágenes JPEG/MJPEG vía HTTP/HTTPS al motor de visión artificial. \\
-\bottomrule
-\end{tabularx}
-\end{table}
+Cámaras IP & Red local & Cámaras que transmiten imágenes JPEG/MJPEG vía HTTP/HTTPS al motor de visión artificial. \\
+\end{longtable}
+
+\textit{Nota.} CDN = Content Delivery Network. AMQPS = AMQP sobre TLS. Todos los nodos de la nube son servicios gestionados que no requieren administración de sistema operativo por parte del equipo.
 
 La comunicación entre nodos se realiza exclusivamente mediante protocolos cifrados:
 

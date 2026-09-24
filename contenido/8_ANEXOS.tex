@@ -30,52 +30,94 @@ La encuesta consta de 12 preguntas orientadas a identificar las necesidades de g
 
 \subsubsection{Diagrama Entidad-Relación}
 
-El diagrama entidad-relación (Figura~4) representa las catorce entidades principales del modelo de datos de Smart-Park y sus relaciones.
+El diagrama entidad-relación representa las catorce entidades principales del modelo de datos de Smart-Park y sus relaciones.
 
-% Aquí debes incluir tu imagen del diagrama ER:
+% --- Descomentar cuando se disponga de la imagen ---
 % \begin{figure}[H]
 % \caption{Diagrama Entidad-Relación del Sistema Smart-Park}
 % \centering
 % \includegraphics[width=0.95\textwidth]{imagenes/diagrama_er.png}
 % \end{figure}
+%
 % \textit{Nota.} Elaboración propia. PK = Primary Key. FK = Foreign Key.
 
 \subsubsection{Relaciones entre Entidades}
 
-\begin{table}[H]
-\caption{Relaciones entre Entidades del Modelo de Datos}
-\begin{tabularx}{\textwidth}{p{3cm} p{2cm} p{3cm} X}
+\begin{longtable}{p{3cm} p{2cm} p{3cm} p{6cm}}
+\caption{Relaciones entre Entidades del Modelo de Datos} \\
 \toprule
 \textbf{Entidad origen} & \textbf{Cardinalidad} & \textbf{Entidad destino} & \textbf{Descripción} \\
 \midrule
-Usuario & 1:N & Vehículo & Un usuario registra uno o más vehículos. \\
-Usuario & 1:N & Reserva & Un usuario crea múltiples reservas a lo largo del tiempo. \\
-Estacionamiento & 1:N & Espacio & Un estacionamiento tiene múltiples espacios. \\
-Estacionamiento & 1:N & Tarifa & Un estacionamiento define múltiples tarifas por tipo de vehículo. \\
-Estacionamiento & 1:N & Cámara & Un estacionamiento habilitado tiene una o más cámaras. \\
-Estacionamiento & 1:N & Personal & Un estacionamiento tiene trabajadores asignados. \\
-Espacio & 1:N & Reserva & Un espacio puede tener múltiples reservas (no simultáneas). \\
-Reserva & 1:1 & Pago & Cada reserva tiene un pago asociado. \\
-Reserva & 0:1 & Reseña & Una reserva completada puede tener una reseña. \\
-Reserva & 0:N & Incidencia & Una reserva puede generar incidencias. \\
-Pago & 1:1 & Comisión & Cada pago genera una comisión para la plataforma. \\
-Estacionamiento & 0:1 & Evaluación técnica & Un estacionamiento puede tener una evaluación técnica para la habilitación de cámaras. \\
-Usuario & 1:N & Auditoría & Las acciones del usuario se registran en la bitácora de auditoría. \\
-Plataforma & 1:1 & Configuración global & La plataforma tiene una configuración global única. \\
+\endfirsthead
+
+\caption[]{Relaciones entre Entidades del Modelo de Datos (continuación)} \\
+\toprule
+\textbf{Entidad origen} & \textbf{Cardinalidad} & \textbf{Entidad destino} & \textbf{Descripción} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{4}{r}{\footnotesize\textit{Continúa en la siguiente página}} \\
+\endfoot
+
 \bottomrule
-\end{tabularx}
-\end{table}
+\endlastfoot
+
+Usuario & 1:N & Vehículo & Un usuario registra uno o más vehículos. \\
+\midrule
+Usuario & 1:N & Reserva & Un usuario crea múltiples reservas a lo largo del tiempo. \\
+\midrule
+Estacionamiento & 1:N & Espacio & Un estacionamiento tiene múltiples espacios. \\
+\midrule
+Estacionamiento & 1:N & Tarifa & Un estacionamiento define múltiples tarifas por tipo de vehículo. \\
+\midrule
+Estacionamiento & 1:N & Cámara & Un estacionamiento habilitado tiene una o más cámaras. \\
+\midrule
+Estacionamiento & 1:N & Personal & Un estacionamiento tiene trabajadores asignados. \\
+\midrule
+Espacio & 1:N & Reserva & Un espacio puede tener múltiples reservas (no simultáneas). \\
+\midrule
+Reserva & 1:1 & Pago & Cada reserva tiene un pago asociado. \\
+\midrule
+Reserva & 0:1 & Reseña & Una reserva completada puede tener una reseña. \\
+\midrule
+Reserva & 0:N & Incidencia & Una reserva puede generar incidencias. \\
+\midrule
+Pago & 1:1 & Comisión & Cada pago genera una comisión para la plataforma. \\
+\midrule
+Estacionamiento & 0:1 & Evaluación técnica & Un estacionamiento puede tener una evaluación técnica para cámaras. \\
+\midrule
+Usuario & 1:N & Auditoría & Las acciones del usuario se registran en la bitácora. \\
+\midrule
+Plataforma & 1:1 & Configuración global & La plataforma tiene una configuración global única. \\
+\end{longtable}
+
+\textit{Nota.} 1:N = uno a muchos. 1:1 = uno a uno. 0:1 = cero o uno. 0:N = cero a muchos. Las relaciones se implementan mediante llaves foráneas con integridad referencial.
 
 \subsubsection{Diccionario de Datos --- Entidades Principales}
 
 \paragraph{Entidad: Usuario} Almacena los datos de los cuatro perfiles del sistema.
 
-\begin{table}[H]
-\caption{Diccionario de Datos --- Entidad Usuario}
-\begin{tabularx}{\textwidth}{p{3.5cm} p{2.5cm} p{1.5cm} X}
+\begin{longtable}{p{3.5cm} p{2.5cm} p{1.5cm} p{6.5cm}}
+\caption{Diccionario de Datos --- Entidad Usuario} \\
 \toprule
 \textbf{Campo} & \textbf{Tipo} & \textbf{Clave} & \textbf{Descripción} \\
 \midrule
+\endfirsthead
+
+\caption[]{Diccionario de Datos --- Entidad Usuario (continuación)} \\
+\toprule
+\textbf{Campo} & \textbf{Tipo} & \textbf{Clave} & \textbf{Descripción} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{4}{r}{\footnotesize\textit{Continúa en la siguiente página}} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
 \texttt{id} & UUID & PK & Identificador único del usuario. \\
 \texttt{nombre} & VARCHAR(100) & --- & Nombre completo del usuario. \\
 \texttt{email} & VARCHAR(150) & UQ & Correo electrónico (único). \\
@@ -90,18 +132,32 @@ Plataforma & 1:1 & Configuración global & La plataforma tiene una configuració
 \texttt{activo} & BOOLEAN & --- & Indica si la cuenta está activa. \\
 \texttt{created\_at} & TIMESTAMP & --- & Fecha de creación del registro. \\
 \texttt{updated\_at} & TIMESTAMP & --- & Fecha de última actualización. \\
-\bottomrule
-\end{tabularx}
-\end{table}
+\end{longtable}
+
+\textit{Nota.} PK = Primary Key. UQ = Unique. UUID = Universally Unique Identifier. El campo \texttt{password\_hash} almacena el hash bcrypt de la contraseña, nunca la contraseña en texto plano.
 
 \paragraph{Entidad: Estacionamiento} Almacena los datos de cada local afiliado.
 
-\begin{table}[H]
-\caption{Diccionario de Datos --- Entidad Estacionamiento}
-\begin{tabularx}{\textwidth}{p{3.5cm} p{2.5cm} p{1.5cm} X}
+\begin{longtable}{p{3.5cm} p{2.5cm} p{1.5cm} p{6.5cm}}
+\caption{Diccionario de Datos --- Entidad Estacionamiento} \\
 \toprule
 \textbf{Campo} & \textbf{Tipo} & \textbf{Clave} & \textbf{Descripción} \\
 \midrule
+\endfirsthead
+
+\caption[]{Diccionario de Datos --- Entidad Estacionamiento (continuación)} \\
+\toprule
+\textbf{Campo} & \textbf{Tipo} & \textbf{Clave} & \textbf{Descripción} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{4}{r}{\footnotesize\textit{Continúa en la siguiente página}} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
 \texttt{id} & UUID & PK & Identificador único del estacionamiento. \\
 \texttt{nombre} & VARCHAR(150) & --- & Nombre comercial del estacionamiento. \\
 \texttt{direccion} & VARCHAR(255) & --- & Dirección física del local. \\
@@ -118,18 +174,32 @@ Plataforma & 1:1 & Configuración global & La plataforma tiene una configuració
 \texttt{activo} & BOOLEAN & --- & Indica si el local está activo en la plataforma. \\
 \texttt{created\_at} & TIMESTAMP & --- & Fecha de creación del registro. \\
 \texttt{updated\_at} & TIMESTAMP & --- & Fecha de última actualización. \\
-\bottomrule
-\end{tabularx}
-\end{table}
+\end{longtable}
+
+\textit{Nota.} FK = Foreign Key. El campo \texttt{admin\_id} referencia a la tabla Usuario. Los campos de coordenadas usan DECIMAL(10,7) para una precisión de aproximadamente 1 metro.
 
 \paragraph{Entidad: Espacio} Representa cada espacio individual dentro de un estacionamiento.
 
-\begin{table}[H]
-\caption{Diccionario de Datos --- Entidad Espacio}
-\begin{tabularx}{\textwidth}{p{3.5cm} p{2.5cm} p{1.5cm} X}
+\begin{longtable}{p{3.5cm} p{2.5cm} p{1.5cm} p{6.5cm}}
+\caption{Diccionario de Datos --- Entidad Espacio} \\
 \toprule
 \textbf{Campo} & \textbf{Tipo} & \textbf{Clave} & \textbf{Descripción} \\
 \midrule
+\endfirsthead
+
+\caption[]{Diccionario de Datos --- Entidad Espacio (continuación)} \\
+\toprule
+\textbf{Campo} & \textbf{Tipo} & \textbf{Clave} & \textbf{Descripción} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{4}{r}{\footnotesize\textit{Continúa en la siguiente página}} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
 \texttt{id} & UUID & PK & Identificador único del espacio. \\
 \texttt{estacionamiento\_id} & UUID & FK & Referencia al estacionamiento al que pertenece. \\
 \texttt{nombre} & VARCHAR(20) & --- & Nombre del espacio (ej. ``A-01'', ``M-03''). \\
@@ -142,18 +212,32 @@ Plataforma & 1:1 & Configuración global & La plataforma tiene una configuració
 \texttt{alto} & DECIMAL(8,2) & --- & Alto del espacio en el plano (píxeles). \\
 \texttt{activo} & BOOLEAN & --- & Indica si el espacio está activo. \\
 \texttt{created\_at} & TIMESTAMP & --- & Fecha de creación del registro. \\
-\bottomrule
-\end{tabularx}
-\end{table}
+\end{longtable}
+
+\textit{Nota.} Las coordenadas (\texttt{pos\_x}, \texttt{pos\_y}) y dimensiones (\texttt{ancho}, \texttt{alto}) corresponden al posicionamiento del espacio dentro del plano 2D digital del local.
 
 \paragraph{Entidad: Reserva} Almacena cada reserva realizada por un conductor.
 
-\begin{table}[H]
-\caption{Diccionario de Datos --- Entidad Reserva}
-\begin{tabularx}{\textwidth}{p{3.5cm} p{2.5cm} p{1.5cm} X}
+\begin{longtable}{p{3.5cm} p{2.5cm} p{1.5cm} p{6.5cm}}
+\caption{Diccionario de Datos --- Entidad Reserva} \\
 \toprule
 \textbf{Campo} & \textbf{Tipo} & \textbf{Clave} & \textbf{Descripción} \\
 \midrule
+\endfirsthead
+
+\caption[]{Diccionario de Datos --- Entidad Reserva (continuación)} \\
+\toprule
+\textbf{Campo} & \textbf{Tipo} & \textbf{Clave} & \textbf{Descripción} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{4}{r}{\footnotesize\textit{Continúa en la siguiente página}} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
 \texttt{id} & UUID & PK & Identificador único de la reserva. \\
 \texttt{usuario\_id} & UUID & FK & Referencia al conductor que reservó. \\
 \texttt{espacio\_id} & UUID & FK & Referencia al espacio reservado. \\
@@ -171,18 +255,32 @@ Plataforma & 1:1 & Configuración global & La plataforma tiene una configuració
 \texttt{importe\_final} & DECIMAL(10,2) & --- & Importe final cobrado (incluye sobreestadía). \\
 \texttt{created\_at} & TIMESTAMP & --- & Fecha de creación del registro. \\
 \texttt{updated\_at} & TIMESTAMP & --- & Fecha de última actualización. \\
-\bottomrule
-\end{tabularx}
-\end{table}
+\end{longtable}
+
+\textit{Nota.} La sobreestadía se calcula como la diferencia entre \texttt{fecha\_salida} y \texttt{fecha\_fin\_estimada}, multiplicada por la tarifa del tipo de vehículo y la unidad de cobro del local.
 
 \paragraph{Entidad: Pago} Registra la transacción de pago asociada a cada reserva.
 
-\begin{table}[H]
-\caption{Diccionario de Datos --- Entidad Pago}
-\begin{tabularx}{\textwidth}{p{3.5cm} p{2.5cm} p{1.5cm} X}
+\begin{longtable}{p{3.5cm} p{2.5cm} p{1.5cm} p{6.5cm}}
+\caption{Diccionario de Datos --- Entidad Pago} \\
 \toprule
 \textbf{Campo} & \textbf{Tipo} & \textbf{Clave} & \textbf{Descripción} \\
 \midrule
+\endfirsthead
+
+\caption[]{Diccionario de Datos --- Entidad Pago (continuación)} \\
+\toprule
+\textbf{Campo} & \textbf{Tipo} & \textbf{Clave} & \textbf{Descripción} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{4}{r}{\footnotesize\textit{Continúa en la siguiente página}} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
 \texttt{id} & UUID & PK & Identificador único del pago. \\
 \texttt{reserva\_id} & UUID & FK & Referencia a la reserva asociada. \\
 \texttt{monto} & DECIMAL(10,2) & --- & Monto total cobrado. \\
@@ -193,18 +291,32 @@ Plataforma & 1:1 & Configuración global & La plataforma tiene una configuració
 \texttt{fecha\_transaccion} & TIMESTAMP & --- & Fecha y hora de la transacción. \\
 \texttt{comprobante\_url} & VARCHAR(255) & --- & URL del comprobante generado. \\
 \texttt{created\_at} & TIMESTAMP & --- & Fecha de creación del registro. \\
-\bottomrule
-\end{tabularx}
-\end{table}
+\end{longtable}
+
+\textit{Nota.} PEN = Sol peruano. ISO 4217 = estándar internacional de códigos de moneda. El campo \texttt{transaccion\_ext\_id} almacena el identificador único asignado por la pasarela (Culqi o PayPal).
 
 \subsubsection{Resumen de Llaves Foráneas}
 
-\begin{table}[H]
-\caption{Resumen de Llaves Foráneas del Modelo de Datos}
-\begin{tabularx}{\textwidth}{p{3cm} p{3.5cm} p{3.5cm} X}
+\begin{longtable}{p{3cm} p{3.5cm} p{3.5cm} p{3.5cm}}
+\caption{Resumen de Llaves Foráneas del Modelo de Datos} \\
 \toprule
 \textbf{Tabla origen} & \textbf{Campo FK} & \textbf{Tabla referenciada} & \textbf{Acción} \\
 \midrule
+\endfirsthead
+
+\caption[]{Resumen de Llaves Foráneas del Modelo de Datos (continuación)} \\
+\toprule
+\textbf{Tabla origen} & \textbf{Campo FK} & \textbf{Tabla referenciada} & \textbf{Acción} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{4}{r}{\footnotesize\textit{Continúa en la siguiente página}} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
 Vehículo & \texttt{usuario\_id} & Usuario & CASCADE \\
 Estacionamiento & \texttt{admin\_id} & Usuario & RESTRICT \\
 Espacio & \texttt{estacionamiento\_id} & Estacionamiento & CASCADE \\
@@ -222,11 +334,9 @@ Reseña & \texttt{estacionamiento\_id} & Estacionamiento & CASCADE \\
 Incidencia & \texttt{reserva\_id} & Reserva & SET NULL \\
 Auditoría & \texttt{usuario\_id} & Usuario & SET NULL \\
 Evaluación & \texttt{estacionamiento\_id} & Estacionamiento & CASCADE \\
-\bottomrule
-\end{tabularx}
-\end{table}
+\end{longtable}
 
-\textit{Nota.} PK = Primary Key (llave primaria). FK = Foreign Key (llave foránea). UQ = Unique (restricción de unicidad). CASCADE = eliminación en cascada. RESTRICT = impide la eliminación. SET NULL = establece el valor en nulo.
+\textit{Nota.} PK = Primary Key (llave primaria). FK = Foreign Key (llave foránea). UQ = Unique (restricción de unicidad). CASCADE = eliminación en cascada. RESTRICT = impide la eliminación si existen registros dependientes. SET NULL = establece el valor en nulo al eliminar el registro padre.
 
 \subsubsection{Consideraciones de Conexión de Base de Datos}
 
@@ -244,41 +354,81 @@ Evaluación & \texttt{estacionamiento\_id} & Estacionamiento & CASCADE \\
 
 Los procesos de negocio del sistema se documentan mediante diagramas BPMN (\textit{Business Process Model and Notation}), que representan las actividades, decisiones y flujos de trabajo de cada operación principal:
 
-\begin{table}[H]
-\caption{Diagramas BPMN del Sistema}
-\begin{tabularx}{\textwidth}{p{0.5cm} p{5cm} X}
+\begin{longtable}{p{0.8cm} p{4.5cm} p{8.5cm}}
+\caption{Diagramas BPMN del Sistema} \\
 \toprule
 \textbf{N.°} & \textbf{Proceso} & \textbf{Descripción} \\
 \midrule
-1 & Afiliación de estacionamiento & Desde la solicitud del local hasta la aprobación o rechazo por el administrador de plataforma, incluyendo la evaluación técnica. \\
-2 & Reserva estándar de espacio & Desde la búsqueda en el mapa hasta la confirmación de la reserva, la generación del pase QR y el pago. \\
-3 & Ingreso y salida de vehículo & Desde la validación del pase QR en garita hasta el registro de salida y el cierre de la reserva. \\
-4 & Detección automática por cámara & Desde la captura de la imagen hasta la actualización del estado del espacio y la notificación al usuario. \\
-5 & Cobro y liquidación & Desde el cálculo del importe hasta el procesamiento del pago, la generación del comprobante y la liquidación al local. \\
-6 & Gestión de incidencias & Desde el reporte del conductor hasta la resolución por el administrador del local y el cierre de la incidencia. \\
+\endfirsthead
+
+\caption[]{Diagramas BPMN del Sistema (continuación)} \\
+\toprule
+\textbf{N.°} & \textbf{Proceso} & \textbf{Descripción} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{3}{r}{\footnotesize\textit{Continúa en la siguiente página}} \\
+\endfoot
+
 \bottomrule
-\end{tabularx}
-\end{table}
+\endlastfoot
+
+1 & Afiliación de estacionamiento & Desde la solicitud del local hasta la aprobación o rechazo por el administrador de plataforma, incluyendo la evaluación técnica. \\
+\midrule
+2 & Reserva estándar de espacio & Desde la búsqueda en el mapa hasta la confirmación de la reserva, la generación del pase QR y el pago. \\
+\midrule
+3 & Ingreso y salida de vehículo & Desde la validación del pase QR en garita hasta el registro de salida y el cierre de la reserva. \\
+\midrule
+4 & Detección automática por cámara & Desde la captura de la imagen hasta la actualización del estado del espacio y la notificación al usuario. \\
+\midrule
+5 & Cobro y liquidación & Desde el cálculo del importe hasta el procesamiento del pago, la generación del comprobante y la liquidación al local. \\
+\midrule
+6 & Gestión de incidencias & Desde el reporte del conductor hasta la resolución por el administrador del local y el cierre de la incidencia. \\
+\end{longtable}
+
+\textit{Nota.} BPMN = Business Process Model and Notation. Los diagramas se elaboran con la herramienta Bizagi Modeler o draw.io.
 
 \subsubsection{Carriles (Lanes) Sugeridos para los Diagramas BPMN}
 
-\begin{table}[H]
-\caption{Carriles Sugeridos para los Diagramas BPMN}
-\begin{tabularx}{\textwidth}{p{4cm} X}
+\begin{longtable}{p{4cm} p{10cm}}
+\caption{Carriles Sugeridos para los Diagramas BPMN} \\
 \toprule
 \textbf{Carril (Lane)} & \textbf{Actor o componente representado} \\
 \midrule
-Conductor & Acciones del usuario final: búsqueda, reserva, pago, ingreso/salida, reseña. \\
-Administrador de plataforma & Decisiones de afiliación, evaluación técnica, configuración global, liquidación. \\
-Administrador de local & Gestión del plano, tarifas, personal, cámaras, resolución de incidencias. \\
-Trabajador de garita & Validación de pases QR, registro de ingreso/salida, cobro en garita. \\
-API Smart-Park & Lógica de negocio automatizada: validaciones, cálculos, generación de códigos. \\
-RabbitMQ & Enrutamiento de eventos asíncronos entre la API y los servicios consumidores. \\
-Motor de visión artificial & Captura de imágenes, detección de vehículos, actualización del estado. \\
-Pasarela de pagos & Procesamiento de cobros: autorización, captura y respuesta de la transacción. \\
+\endfirsthead
+
+\caption[]{Carriles Sugeridos para los Diagramas BPMN (continuación)} \\
+\toprule
+\textbf{Carril (Lane)} & \textbf{Actor o componente representado} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{2}{r}{\footnotesize\textit{Continúa en la siguiente página}} \\
+\endfoot
+
 \bottomrule
-\end{tabularx}
-\end{table}
+\endlastfoot
+
+Conductor & Acciones del usuario final: búsqueda, reserva, pago, ingreso/salida, reseña. \\
+\midrule
+Administrador de plataforma & Decisiones de afiliación, evaluación técnica, configuración global, liquidación. \\
+\midrule
+Administrador de local & Gestión del plano, tarifas, personal, cámaras, resolución de incidencias. \\
+\midrule
+Trabajador de garita & Validación de pases QR, registro de ingreso/salida, cobro en garita. \\
+\midrule
+API Smart-Park & Lógica de negocio automatizada: validaciones, cálculos, generación de códigos. \\
+\midrule
+RabbitMQ & Enrutamiento de eventos asíncronos entre la API y los servicios consumidores. \\
+\midrule
+Motor de visión artificial & Captura de imágenes, detección de vehículos, actualización del estado. \\
+\midrule
+Pasarela de pagos & Procesamiento de cobros: autorización, captura y respuesta de la transacción. \\
+\end{longtable}
+
+\textit{Nota.} Cada carril (\textit{lane}) representa un actor o componente que ejecuta actividades dentro del proceso. Los carriles se agrupan en piscinas (\textit{pools}) que representan los límites organizacionales.
 
 \subsection{Requisitos}
 
@@ -286,19 +436,23 @@ Pasarela de pagos & Procesamiento de cobros: autorización, captura y respuesta 
 
 El sistema Smart-Park fue especificado con un total de 184 requerimientos, distribuidos de la siguiente manera:
 
-\begin{table}[H]
-\caption{Resumen General de Requerimientos}
-\begin{tabularx}{\textwidth}{X r}
+\begin{longtable}{p{10cm} r}
+\caption{Resumen General de Requerimientos} \\
 \toprule
 \textbf{Categoría} & \textbf{Cantidad} \\
 \midrule
+\endfirsthead
+
+\bottomrule
+\endlastfoot
+
 Requerimientos funcionales (RF) & 150 \\
 Requerimientos no funcionales (RNF) & 34 \\
 \midrule
 \textbf{Total} & \textbf{184} \\
-\bottomrule
-\end{tabularx}
-\end{table}
+\end{longtable}
+
+\textit{Nota.} RF = Requerimiento Funcional. RNF = Requerimiento No Funcional.
 
 Los requerimientos funcionales se organizan en los siguientes módulos:
 
@@ -317,12 +471,26 @@ Los requerimientos funcionales se organizan en los siguientes módulos:
 
 \subsection{Requerimientos Funcionales Críticos (Selección)}
 
-\begin{table}[H]
-\caption{Requerimientos Funcionales Críticos}
-\begin{tabularx}{\textwidth}{p{1.2cm} X}
+\begin{longtable}{p{1.2cm} p{12.8cm}}
+\caption{Requerimientos Funcionales Críticos} \\
 \toprule
 \textbf{ID} & \textbf{Descripción} \\
 \midrule
+\endfirsthead
+
+\caption[]{Requerimientos Funcionales Críticos (continuación)} \\
+\toprule
+\textbf{ID} & \textbf{Descripción} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{2}{r}{\footnotesize\textit{Continúa en la siguiente página}} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
 RF01 & El sistema debe permitir el registro de usuarios con correo electrónico y contraseña, validando formato de correo y fortaleza de la contraseña. \\
 RF05 & El sistema debe permitir el inicio de sesión mediante cuenta de Google (OAuth 2.0). \\
 RF10 & El sistema debe implementar un PIN de seguridad de 4 a 6 dígitos para los perfiles administrativos. \\
@@ -333,18 +501,32 @@ RF75 & El sistema debe generar un pase de acceso digital con código QR y códig
 RF92 & El sistema debe procesar pagos electrónicos mediante Culqi (tarjetas, Yape, Plin) y PayPal. \\
 RF110 & El sistema debe capturar imágenes de las cámaras IP de los locales habilitados de forma periódica y procesarlas con el modelo YOLOv8. \\
 RF122 & El sistema debe enviar notificaciones en tiempo real mediante WebSocket cuando el estado de un espacio cambia. \\
-\bottomrule
-\end{tabularx}
-\end{table}
+\end{longtable}
+
+\textit{Nota.} Se presentan los requerimientos funcionales de mayor impacto arquitectónico. La lista completa de 150 RF se encuentra en el documento de especificación de requerimientos del proyecto.
 
 \subsubsection{Requerimientos No Funcionales Críticos (Selección)}
 
-\begin{table}[H]
-\caption{Requerimientos No Funcionales Críticos}
-\begin{tabularx}{\textwidth}{p{1.2cm} p{2.5cm} X}
+\begin{longtable}{p{1.2cm} p{2.5cm} p{10cm}}
+\caption{Requerimientos No Funcionales Críticos} \\
 \toprule
 \textbf{ID} & \textbf{Categoría} & \textbf{Descripción} \\
 \midrule
+\endfirsthead
+
+\caption[]{Requerimientos No Funcionales Críticos (continuación)} \\
+\toprule
+\textbf{ID} & \textbf{Categoría} & \textbf{Descripción} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{3}{r}{\footnotesize\textit{Continúa en la siguiente página}} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
 RNF01 & Rendimiento & El tiempo de respuesta de la API debe ser inferior a 500 ms para el 95\,\% de las peticiones bajo carga normal. \\
 RNF04 & Rendimiento & Las consultas a la base de datos deben ejecutarse en menos de 200 ms, con índices optimizados en los campos de búsqueda frecuente. \\
 RNF06 & Seguridad & Todas las comunicaciones deben cifrarse con TLS 1.2 o superior (HTTPS y WSS). \\
@@ -353,27 +535,47 @@ RNF15 & Seguridad & La documentación Swagger/OpenAPI debe desactivarse en el en
 RNF20 & Disponibilidad & El sistema debe tener una disponibilidad del 99,5\,\% mensual, excluyendo ventanas de mantenimiento programado. \\
 RNF24 & Escalabilidad & La arquitectura debe soportar el escalamiento horizontal de la capa de aplicación mediante réplicas del contenedor Docker. \\
 RNF29 & Mantenibilidad & El código fuente debe seguir las convenciones PEP 8 (Python) y ESLint + Prettier (JavaScript), con cobertura de pruebas unitarias superior al 70\,\%. \\
-\bottomrule
-\end{tabularx}
-\end{table}
+\end{longtable}
+
+\textit{Nota.} Se presentan los requerimientos no funcionales que influyeron directamente en las decisiones de arquitectura. La lista completa de 34 RNF se encuentra en el documento de especificación de requerimientos del proyecto.
 
 \subsubsection{Drivers de Arquitectura}
 
 Los \textit{drivers} de arquitectura son los requerimientos de mayor impacto sobre las decisiones de diseño del sistema. Se priorizan según su influencia en la estructura de la solución:
 
-\begin{table}[H]
-\caption{Drivers de Arquitectura}
-\begin{tabularx}{\textwidth}{p{1.2cm} p{2.5cm} X}
+\begin{longtable}{p{1.2cm} p{2.5cm} p{10cm}}
+\caption{Drivers de Arquitectura} \\
 \toprule
 \textbf{ID} & \textbf{Driver} & \textbf{Decisión arquitectónica asociada} \\
 \midrule
-DA-01 & Tiempo real & Adopción de WebSocket (WSS) para la difusión instantánea del estado de los espacios, en lugar de \textit{polling} HTTP. \\
-DA-02 & Multi-tenancy & Diseño de la base de datos con aislamiento lógico por identificador de estacionamiento y middleware RBAC que filtra los datos por contexto. \\
-DA-03 & Desacoplamiento & Adopción de RabbitMQ como cola de mensajes para separar la lógica de negocio síncrona de los procesos asíncronos (notificaciones, visión artificial, respaldos). \\
-DA-04 & Rendimiento & Implementación de Redis como caché de sesiones, estado temporal y consultas frecuentes, reduciendo la carga sobre PostgreSQL. \\
-DA-05 & Seguridad & Almacenamiento de tokens JWT en cookies HttpOnly con cifrado TLS, PIN administrativo y bitácora de auditoría para el cumplimiento de los requerimientos de seguridad. \\
-DA-06 & Escalabilidad horizontal & Contenedorización con Docker y despliegue en Railway, que permite replicar el servicio de aplicación según la demanda. \\
-DA-07 & Visión artificial & Integración de YOLOv8 como proceso independiente dentro del contenedor, desacoplado de la API mediante la cola de mensajes, para evitar que el procesamiento de imágenes afecte la latencia de las peticiones HTTP. \\
+\endfirsthead
+
+\caption[]{Drivers de Arquitectura (continuación)} \\
+\toprule
+\textbf{ID} & \textbf{Driver} & \textbf{Decisión arquitectónica asociada} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{3}{r}{\footnotesize\textit{Continúa en la siguiente página}} \\
+\endfoot
+
 \bottomrule
-\end{tabularx}
-\end{table}
+\endlastfoot
+
+DA-01 & Tiempo real & Adopción de WebSocket (WSS) para la difusión instantánea del estado de los espacios, en lugar de \textit{polling} HTTP. \\
+\midrule
+DA-02 & Multi-tenancy & Diseño de la base de datos con aislamiento lógico por identificador de estacionamiento y middleware RBAC que filtra los datos por contexto. \\
+\midrule
+DA-03 & Desacoplamiento & Adopción de RabbitMQ como cola de mensajes para separar la lógica de negocio síncrona de los procesos asíncronos (notificaciones, visión artificial, respaldos). \\
+\midrule
+DA-04 & Rendimiento & Implementación de Redis como caché de sesiones, estado temporal y consultas frecuentes, reduciendo la carga sobre PostgreSQL. \\
+\midrule
+DA-05 & Seguridad & Almacenamiento de tokens JWT en cookies HttpOnly con cifrado TLS, PIN administrativo y bitácora de auditoría para el cumplimiento de los requerimientos de seguridad. \\
+\midrule
+DA-06 & Escalabilidad horizontal & Contenedorización con Docker y despliegue en Railway, que permite replicar el servicio de aplicación según la demanda. \\
+\midrule
+DA-07 & Visión artificial & Integración de YOLOv8 como proceso independiente dentro del contenedor, desacoplado de la API mediante la cola de mensajes, para evitar que el procesamiento de imágenes afecte la latencia de las peticiones HTTP. \\
+\end{longtable}
+
+\textit{Nota.} DA = Driver de Arquitectura. Cada driver se vincula con uno o más requerimientos funcionales y no funcionales que motivaron la decisión de diseño.

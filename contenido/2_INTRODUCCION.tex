@@ -18,12 +18,26 @@ Las fuentes de ingreso de la plataforma son cuatro: una comisión por transacci�
 
 Se aplicó una encuesta a 108 conductores de la ciudad, cuyos resultados sustentan la necesidad del sistema:
 
-\begin{table}[H]
-\caption{Resultados de Encuesta a Conductores}
-\begin{tabularx}{\textwidth}{X r}
+\begin{longtable}{p{11cm} r}
+\caption{Resultados de Encuesta a Conductores} \\
 \toprule
 \textbf{Indicador} & \textbf{Porcentaje} \\
 \midrule
+\endfirsthead
+
+\caption[]{Resultados de Encuesta a Conductores (continuación)} \\
+\toprule
+\textbf{Indicador} & \textbf{Porcentaje} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{2}{r}{\footnotesize\textit{Continúa en la siguiente página}} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
 No siempre sabe, antes de dirigirse a un estacionamiento, si existen espacios disponibles & 90,7\,\% \\
 Considera la congestión vehicular un problema ligado a la búsqueda de estacionamiento & 75,0\,\% \\
 Señala que demora demasiado tiempo en encontrar un espacio libre & 75,9\,\% \\
@@ -34,9 +48,7 @@ Utilizaría una aplicación que muestre estacionamientos disponibles en tiempo r
 Utilizaría una aplicación para encontrar y reservar estacionamientos & 99,1\,\% \\
 Utilizaría la solución si estuviera disponible & 98,1\,\% \\
 Estaría dispuesto a pagar un pequeño monto de garantía para reservar un espacio & 98,1\,\% \\
-\bottomrule
-\end{tabularx}
-\end{table}
+\end{longtable}
 
 \textit{Nota.} Los datos se obtuvieron mediante encuesta propia aplicada a 108 conductores de la ciudad de Ayacucho (Huamanga) durante el mes de julio de 2026.
 
@@ -44,12 +56,26 @@ Estaría dispuesto a pagar un pequeño monto de garantía para reservar un espac
 
 Se aplicó una encuesta complementaria a 21 trabajadores y administradores de estacionamientos:
 
-\begin{table}[H]
-\caption{Resultados de Encuesta a Trabajadores y Administradores}
-\begin{tabularx}{\textwidth}{X r}
+\begin{longtable}{p{11cm} r}
+\caption{Resultados de Encuesta a Trabajadores y Administradores} \\
 \toprule
 \textbf{Indicador} & \textbf{Porcentaje} \\
 \midrule
+\endfirsthead
+
+\caption[]{Resultados de Encuesta a Trabajadores y Administradores (continuación)} \\
+\toprule
+\textbf{Indicador} & \textbf{Porcentaje} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{2}{r}{\footnotesize\textit{Continúa en la siguiente página}} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
 Considera un problema no saber cuántos espacios quedan disponibles & 66,7\,\% \\
 Identifica congestión durante las horas punta & 57,1\,\% \\
 No utiliza actualmente un sistema especializado de administración & 61,9\,\% \\
@@ -60,9 +86,7 @@ Implementaría un sistema tecnológico de gestión & 95,2\,\% \\
 Pagaría una suscripción mensual por el servicio & 90,5\,\% \\
 Considera importante ahorrar tiempo & 90,5\,\% \\
 Considera importante tener mayor control del negocio & 85,7\,\% \\
-\bottomrule
-\end{tabularx}
-\end{table}
+\end{longtable}
 
 \textit{Nota.} Los datos se obtuvieron mediante encuesta propia aplicada a 21 trabajadores y administradores de estacionamientos de la ciudad de Ayacucho (Huamanga) durante el mes de julio de 2026.
 
@@ -91,12 +115,26 @@ Ante esta problemática se propone Smart-Park, cuyas capacidades principales son
 
 \paragraph{Actores principales} Se identifican cuatro actores principales que interactúan directamente con el sistema:
 
-\begin{table}[H]
-\caption{Actores Principales del Sistema}
-\begin{tabularx}{\textwidth}{p{2.8cm} p{2cm} p{2.5cm} X}
+\begin{longtable}{p{2.8cm} p{2cm} p{2.5cm} p{6.5cm}}
+\caption{Actores Principales del Sistema} \\
 \toprule
 \textbf{Actor} & \textbf{Tipo} & \textbf{Nivel} & \textbf{Responsabilidades principales} \\
 \midrule
+\endfirsthead
+
+\caption[]{Actores Principales del Sistema (continuación)} \\
+\toprule
+\textbf{Actor} & \textbf{Tipo} & \textbf{Nivel} & \textbf{Responsabilidades principales} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{4}{r}{\footnotesize\textit{Continúa en la siguiente página}} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
 Administrador de plataforma & Principal (interno) & Nivel central & Administra toda la red de estacionamientos afiliados. Aprueba o rechaza afiliaciones, realiza la evaluación técnica y habilita el módulo de cámaras, gestiona usuarios y roles, define comisiones y configuración global, liquida fondos, modera reseñas, envía comunicados masivos y supervisa la auditoría. \\
 \midrule
 Administrador de local & Principal (interno) & Central y estacionamiento & Administra un estacionamiento específico: datos generales, plano digital, espacios, tarifas, políticas de reserva, cámaras y su calibración, personal y turnos. Responde reseñas, resuelve incidencias y consulta los reportes de su local. \\
@@ -104,48 +142,82 @@ Administrador de local & Principal (interno) & Central y estacionamiento & Admin
 Trabajador del local & Principal (interno) & Estacionamiento & Supervisa la operación diaria: valida los pases QR, registra ingresos y salidas, controla el estado de los espacios, cobra en garita cuando corresponde y registra incidencias. \\
 \midrule
 Usuario final (conductor) & Principal (externo) & Nivel central & Se registra, busca estacionamientos en el mapa, registra sus vehículos, reserva y paga espacios, usa el pase QR, amplía o cancela reservas, consulta su historial, reporta incidencias y califica el servicio. \\
-\bottomrule
-\end{tabularx}
-\end{table}
+\end{longtable}
+
+\textit{Nota.} El tipo ``Principal'' indica interacción directa y frecuente con el sistema. El nivel se refiere a la capa de la arquitectura jerárquica a la que el actor tiene acceso.
 
 \paragraph{Actores secundarios y sistemas externos} Complementan las funcionalidades del sistema:
 
-\begin{table}[H]
-\caption{Actores Secundarios y Sistemas Externos}
-\begin{tabularx}{\textwidth}{p{4.5cm} X}
+\begin{longtable}{p{4.5cm} p{9.5cm}}
+\caption{Actores Secundarios y Sistemas Externos} \\
 \toprule
 \textbf{Actor o sistema} & \textbf{Función en el sistema} \\
 \midrule
-Cámaras IP de los locales habilitados & Proporcionan las imágenes que el motor de visión artificial analiza para detectar vehículos y determinar la ocupación de los espacios. \\
-Motor de visión artificial (YOLOv8 / OpenCV) & Detecta los vehículos (autos, motos, buses y camiones) y clasifica cada espacio como libre u ocupado. \\
-Pasarelas de pago (Culqi y PayPal) & Procesan los cobros con tarjeta y billeteras digitales, y confirman o rechazan cada transacción. \\
-Servicio de autenticación de Google & Permite iniciar sesión con una cuenta de Google. \\
-Servicio de mapas (Leaflet) & Muestra el mapa interactivo, la ubicación de los locales y la posición del usuario. \\
-Procesos automáticos del sistema & Liberan reservas por vencimiento de la tolerancia, escanean las cámaras de forma periódica y realizan las copias de seguridad programadas. \\
+\endfirsthead
+
+\caption[]{Actores Secundarios y Sistemas Externos (continuación)} \\
+\toprule
+\textbf{Actor o sistema} & \textbf{Función en el sistema} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{2}{r}{\footnotesize\textit{Continúa en la siguiente página}} \\
+\endfoot
+
 \bottomrule
-\end{tabularx}
-\end{table}
+\endlastfoot
+
+Cámaras IP de los locales habilitados & Proporcionan las imágenes que el motor de visión artificial analiza para detectar vehículos y determinar la ocupación de los espacios. \\
+\midrule
+Motor de visión artificial (YOLOv8 / OpenCV) & Detecta los vehículos (autos, motos, buses y camiones) y clasifica cada espacio como libre u ocupado. \\
+\midrule
+Pasarelas de pago (Culqi y PayPal) & Procesan los cobros con tarjeta y billeteras digitales, y confirman o rechazan cada transacción. \\
+\midrule
+Servicio de autenticación de Google & Permite iniciar sesión con una cuenta de Google. \\
+\midrule
+Servicio de mapas (Leaflet) & Muestra el mapa interactivo, la ubicación de los locales y la posición del usuario. \\
+\midrule
+Procesos automáticos del sistema & Liberan reservas por vencimiento de la tolerancia, escanean las cámaras de forma periódica y realizan las copias de seguridad programadas. \\
+\end{longtable}
+
+\textit{Nota.} Los actores secundarios no interactúan con la interfaz de usuario; son sistemas o componentes que complementan la operación de la plataforma.
 
 \subsection{Diagrama de Contexto}
 
-El diagrama de contexto (Figura~1) sitúa al sistema Smart-Park como bloque central. Alrededor de este bloque se representan los actores y sistemas externos, cada uno conectado mediante una flecha etiquetada con el tipo de dato que intercambia.
+El diagrama de contexto sitúa al sistema Smart-Park como bloque central. Alrededor de este bloque se representan los actores y sistemas externos, cada uno conectado mediante una flecha etiquetada con el tipo de dato que intercambia.
 
-% Aquí debes incluir tu imagen del diagrama de contexto:
+% --- Descomentar cuando se disponga de la imagen ---
 % \begin{figure}[H]
 % \caption{Diagrama de Contexto del Sistema Smart-Park}
 % \centering
 % \includegraphics[width=0.95\textwidth]{imagenes/diagrama_contexto.png}
 % \end{figure}
+%
 % \textit{Nota.} Elaboración propia.
 
-La Tabla~7 describe los flujos de información entre el sistema y cada actor externo:
+La siguiente tabla describe los flujos de información entre el sistema y cada actor externo:
 
-\begin{table}[H]
-\caption{Intercambio de Datos en el Diagrama de Contexto}
-\begin{tabularx}{\textwidth}{p{3.5cm} p{2cm} X}
+\begin{longtable}{p{3.5cm} p{2cm} p{8.5cm}}
+\caption{Intercambio de Datos en el Diagrama de Contexto} \\
 \toprule
 \textbf{Actor / Sistema externo} & \textbf{Dirección} & \textbf{Datos intercambiados} \\
 \midrule
+\endfirsthead
+
+\caption[]{Intercambio de Datos en el Diagrama de Contexto (continuación)} \\
+\toprule
+\textbf{Actor / Sistema externo} & \textbf{Dirección} & \textbf{Datos intercambiados} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{3}{r}{\footnotesize\textit{Continúa en la siguiente página}} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
 Usuario final (conductor) & Bidireccional & Envía: ubicación, datos de reserva, placa y tipo de vehículo, pago, reseñas e incidencias. Recibe: disponibilidad en tiempo real, tarifas, confirmaciones, notificaciones, pase QR y comprobantes. \\
 \midrule
 Administrador de plataforma & Bidireccional & Envía: decisiones de afiliación, resultados de evaluación técnica, comisiones, configuración global y comunicados. Recibe: solicitudes de afiliación, reportes consolidados y alertas de auditoría. \\
@@ -161,6 +233,6 @@ Pasarelas de pago & Bidireccional & Envía: solicitud de cobro. Recibe: confirma
 Autenticación de Google & Bidireccional & Envía: solicitud de inicio de sesión. Recibe: identidad verificada del usuario. \\
 \midrule
 Servicio de mapas & Bidireccional & Envía: coordenadas del usuario y de los locales. Recibe: capas cartográficas de calles y satélite. \\
-\bottomrule
-\end{tabularx}
-\end{table}
+\end{longtable}
+
+\textit{Nota.} La dirección ``Bidireccional'' indica que el sistema envía y recibe datos del actor. ``Entrante'' indica que el actor solo envía datos hacia el sistema.
