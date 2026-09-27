@@ -55,7 +55,7 @@ I-07 & Registro de Reseña & App Web $\rightarrow$ API & HTTPS & JSON \\
 
 A continuación se detalla la estructura de datos de cada interfase, incluyendo los campos, tipos y restricciones del mensaje.
 
-\subsubsection{Interfase --- Solicitud de Reserva (Aplicación Web $\rightarrow$ API, HTTPS/JSON)}
+\newpage\subsubsection{Interfase --- Solicitud de Reserva (Aplicación Web $\rightarrow$ API, HTTPS/JSON)}
 
 \begin{longtable}{p{3.5cm} p{3cm} p{1.5cm} p{5.5cm}}
 \caption{Estructura de la Interfase I-01: Solicitud de Reserva} \\
@@ -83,7 +83,7 @@ A continuación se detalla la estructura de datos de cada interfase, incluyendo 
 
 \textit{Nota.} El \texttt{usuario\_id} se extrae del token JWT en la cookie de sesión y no se envía en el cuerpo de la petición. UUID = Universally Unique Identifier. ISO 8601 = formato internacional de fecha y hora.
 
-\subsubsection{Interfase --- Confirmación de Reserva (API $\rightarrow$ Aplicación Web, HTTPS/JSON)}
+\newpage\subsubsection{Interfase --- Confirmación de Reserva (API $\rightarrow$ Aplicación Web, HTTPS/JSON)}
 
 \begin{longtable}{p{3.5cm} p{3cm} p{1.5cm} p{5.5cm}}
 \caption{Estructura de la Interfase I-02: Confirmación de Reserva} \\
@@ -199,7 +199,7 @@ A continuación se detalla la estructura de datos de cada interfase, incluyendo 
 
 \textit{Nota.} El token de tarjeta se genera en el navegador del cliente mediante el SDK de la pasarela y nunca pasa por los servidores de Smart-Park, cumpliendo con los estándares PCI DSS.
 
-\subsubsection{Interfase --- Respuesta de Transacción (Proveedor de Pagos $\rightarrow$ API)}
+\newpage\subsubsection{Interfase --- Respuesta de Transacción (Proveedor de Pagos $\rightarrow$ API)}
 
 \begin{longtable}{p{3.5cm} p{3cm} p{1.5cm} p{5.5cm}}
 \caption{Estructura de la Interfase I-06: Respuesta de Transacción} \\
@@ -228,7 +228,7 @@ A continuación se detalla la estructura de datos de cada interfase, incluyendo 
 
 \textit{Nota.} En caso de rechazo, el campo \texttt{codigo\_error} contiene el código específico de la pasarela (ej. \texttt{card\_declined}, \texttt{insufficient\_funds}).
 
-\subsubsection{Interfase --- Registro de Reseña (Aplicación Web $\rightarrow$ API)}
+\newpage\subsubsection{Interfase --- Registro de Reseña (Aplicación Web $\rightarrow$ API)}
 
 \begin{longtable}{p{3.5cm} p{3cm} p{1.5cm} p{5.5cm}}
 \caption{Estructura de la Interfase I-07: Registro de Reseña} \\

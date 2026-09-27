@@ -51,7 +51,7 @@ Datos & PostgreSQL + Volumen & Almacenamiento persistente relacional y almacenam
 
 \textit{Nota.} La comunicación entre capas es descendente y unidireccional: cada capa solo depende de la capa inmediatamente inferior (Bass et al., 2021).
 
-\subsubsection{Capa de presentación (React 19 + Vite)}
+\newpage\subsubsection{Capa de presentación (React 19 + Vite)}
 
 La capa de presentación es una aplicación de página única (\textit{Single Page Application}, SPA) construida con React 19 y empaquetada con Vite. Se despliega en Vercel como activos estáticos y se conecta a la API central por HTTPS y al servidor de WebSocket por WSS.
 
@@ -112,7 +112,7 @@ Esta capa contiene los procesos que se ejecutan dentro del mismo contenedor Dock
     \end{itemize}
 \end{itemize}
 
-\subsubsection{Capa de datos}
+\newpage\subsubsection{Capa de datos}
 
 La capa de datos comprende dos componentes:
 
@@ -133,7 +133,7 @@ La vista de comportamiento describe cómo los componentes del sistema interactú
 \vspace{-5pt}
 \textit{Nota.} Elaboración propia.
 
-\paragraph{Flujo de reserva estándar} El conductor selecciona un espacio en el plano interactivo y confirma la reserva:
+\newpage\paragraph{Flujo de reserva estándar} El conductor selecciona un espacio en el plano interactivo y confirma la reserva:
 
 \begin{enumerate}
     \item El conductor abre la vista de un estacionamiento y visualiza el plano con el estado en vivo de los espacios (recibido por WebSocket).
@@ -169,7 +169,7 @@ La vista de comportamiento describe cómo los componentes del sistema interactú
     \item El consumidor de eventos de cámara actualiza la base de datos y el caché de Redis, y difunde el nuevo estado por WebSocket.
 \end{enumerate}
 
-\subsection{Vista Física}
+\newpage\subsection{Vista Física}
 
 La vista física describe la topología de despliegue del sistema, es decir, la distribución de los artefactos de software sobre los nodos de hardware y servicios en la nube.
 
