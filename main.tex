@@ -37,8 +37,10 @@
 % Encabezado institucional a la izquierda y derecha
 \fancyhead[L]{\raisebox{-0.5\height}{\includegraphics[height=1.2cm]{imagenes/caratula.png}}}
 \fancyhead[R]{%
-  \parbox[b]{12cm}{\raggedleft\footnotesize\textbf{ESCUELA DE EDUCACIÓN SUPERIOR TECNOLÓGICA PRIVADA LA PONTIFICIA}\\\textbf{DIRECCIÓN ACADÉMICA}} \hspace{0.5cm} \thepage
+  \parbox[b]{12cm}{\raggedleft\footnotesize\textbf{ESCUELA DE EDUCACIÓN SUPERIOR TECNOLÓGICA PRIVADA LA PONTIFICIA}\\\textbf{DIRECCIÓN ACADÉMICA}}
 }
+% Numeración en el pie de página
+\fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 
 % Aplicar el mismo estilo a las páginas de inicio de sección
@@ -46,8 +48,9 @@
   \fancyhf{}
   \fancyhead[L]{\raisebox{-0.5\height}{\includegraphics[height=1.2cm]{imagenes/caratula.png}}}
   \fancyhead[R]{%
-    \parbox[b]{12cm}{\raggedleft\footnotesize\textbf{ESCUELA DE EDUCACIÓN SUPERIOR TECNOLÓGICA PRIVADA LA PONTIFICIA}\\\textbf{DIRECCIÓN ACADÉMICA}} \hspace{0.5cm} \thepage
+    \parbox[b]{12cm}{\raggedleft\footnotesize\textbf{ESCUELA DE EDUCACIÓN SUPERIOR TECNOLÓGICA PRIVADA LA PONTIFICIA}\\\textbf{DIRECCIÓN ACADÉMICA}}
   }
+  \fancyfoot[C]{\thepage}
   \renewcommand{\headrulewidth}{0.4pt}
 }
 
