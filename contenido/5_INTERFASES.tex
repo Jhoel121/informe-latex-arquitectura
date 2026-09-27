@@ -14,11 +14,45 @@ El diagrama de interfases representa gráficamente los puntos de integración de
 \caption{Diagrama de Interfases del Sistema Smart-Park}
 \centering
 \includegraphics[width=0.95\textwidth]{imagenes/figuras/figura_6.png}
+% \begin{verbatim}
+% flowchart TB
+%     UC["Usuario Cliente<br/>(App Móvil / Portal Web)"]
+%     AS["Administrador del Sistema<br/>(Panel Backoffice Web)"]
+%     EL["Encargado de Local Afiliado<br/>(Panel de Gestión Web)"]
+% 
+%     SP["Sistema Smart-Park<br/>(Núcleo de Aplicación)"]
+% 
+%     BA["Barrera de Acceso Motorizada<br/>(Gateway Local)"]
+%     SV["Sistema de Videovigilancia<br/>(CCTV / NVR Local)"]
+% 
+%     PP["Pasarela de Pagos Electrónicos<br/>(Servicio Externo)"]
+%     SN["Servicio de Notificaciones<br/>(Email / SMS / Push)"]
+%     SM["Servicio de Mapas y Geolocalización<br/>(Servicio Externo)"]
+% 
+%     UC <-->|"INT-01: HTTPS / API REST"| SP
+%     AS <-->|"INT-02: HTTPS / API REST"| SP
+%     EL <-->|"INT-03: HTTPS / API REST"| SP
+%     SP <-->|"INT-04: HTTPS / API REST (Webhook de confirmación)"| PP
+%     SP -->|"INT-05: HTTPS / API REST"| SN
+%     SP -->|"INT-06: RTSP / HTTP (Streaming de video)"| SV
+%     SP -->|"INT-07: MQTT / Señal de control"| BA
+%     SP -->|"INT-08: HTTPS / API REST"| SM
+% 
+%     classDef actor fill:#d9ead3,stroke:#38761d,color:#000
+%     classDef externo fill:#f4cccc,stroke:#cc0000,color:#000
+%     classDef local fill:#fce5cd,stroke:#e69138,color:#000
+%     classDef nucleo fill:#c9daf8,stroke:#3d85c6,color:#000,font-weight:bold
+% 
+%     class UC,AS,EL actor
+%     class PP,SN,SM externo
+%     class BA,SV local
+%     class SP nucleo
+% \end{verbatim}
 \end{figure}
 \vspace{-5pt}
-\textit{Nota.} Elaboración propia. Cada flecha indica el protocolo de comunicación y la dirección del flujo de datos.
+\textit{Nota.} Elaboración propia. Cada flecha indica el protocolo de comunicación y la dirección del flujo de datos. La leyenda de colores distingue tres categorías: actores/usuarios del sistema (verde), servicios externos de terceros (rojo/rosado) y equipamiento físico o local (naranja).
 
-Las siete interfases principales del sistema se resumen a continuación:
+Las siete interfases principales del sistema, detalladas en la sección 5.2, se resumen a continuación:
 
 \begin{longtable}{p{0.8cm} p{3cm} p{3.5cm} p{1.8cm} p{4.5cm}}
 \caption{Resumen de Interfases del Sistema} \\
@@ -53,9 +87,25 @@ I-07 & Registro de Reseña & App Web $\rightarrow$ API & HTTPS & JSON \\
 
 \subsection{Estructura de Datos de las Interfases}
 
-A continuación se detalla la estructura de datos de cada interfase, incluyendo los campos, tipos y restricciones del mensaje.
+A continuación se detalla la estructura de datos de cada interfase, incluyendo los campos, tipos y restricciones del mensaje, acompañada de su respectivo diagrama de flujo.
 
-\subsubsection{Interfase --- Solicitud de Reserva (Aplicación Web $\rightarrow$ API, HTTPS/JSON)}
+\subsubsection{Interfase I-01 --- Solicitud de Reserva (Aplicación Web $\rightarrow$ API, HTTPS/JSON)}
+
+\begin{figure}[H]
+\caption{Diagrama de Flujo de la Interfase I-01: Solicitud de Reserva}
+\centering
+\includegraphics[width=0.85\textwidth]{imagenes/figuras/figura_7.png}
+% \begin{verbatim}
+% sequenceDiagram
+%     participant W as Aplicación Web
+%     participant A as API Smart-Park
+%     W->>A: HTTPS POST /api/reservas (JSON)
+%     Note over W,A: espacio_id, vehiculo_id, modalidad,<br/>duracion_minutos, fecha_inicio, metodo_pago
+%     A-->>W: 201 Created (reserva registrada)
+% \end{verbatim}
+\end{figure}
+\vspace{-5pt}
+\textit{Nota.} Elaboración propia. El \texttt{usuario\_id} no se incluye en el mensaje; se obtiene del token JWT de la sesión activa.
 
 \begin{longtable}{p{3.5cm} p{3cm} p{1.5cm} p{5.5cm}}
 \caption{Estructura de la Interfase I-01: Solicitud de Reserva} \\
@@ -83,7 +133,23 @@ A continuación se detalla la estructura de datos de cada interfase, incluyendo 
 
 \textit{Nota.} El \texttt{usuario\_id} se extrae del token JWT en la cookie de sesión y no se envía en el cuerpo de la petición. UUID = Universally Unique Identifier. ISO 8601 = formato internacional de fecha y hora.
 
-\subsubsection{Interfase --- Confirmación de Reserva (API $\rightarrow$ Aplicación Web, HTTPS/JSON)}
+\subsubsection{Interfase I-02 --- Confirmación de Reserva (API $\rightarrow$ Aplicación Web, HTTPS/JSON)}
+
+\begin{figure}[H]
+\caption{Diagrama de Flujo de la Interfase I-02: Confirmación de Reserva}
+\centering
+\includegraphics[width=0.85\textwidth]{imagenes/figuras/figura_8.png}
+% \begin{verbatim}
+% sequenceDiagram
+%     participant A as API Smart-Park
+%     participant W as Aplicación Web
+%     A->>W: HTTPS Response (JSON)
+%     Note over A,W: reserva_id, codigo_qr, codigo_validacion,<br/>estado, importe_total, moneda,<br/>hora_limite, espacio, estacionamiento
+%     W-->>W: Renderiza pase de acceso digital (QR)
+% \end{verbatim}
+\end{figure}
+\vspace{-5pt}
+\textit{Nota.} Elaboración propia. Esta interfase se emite inmediatamente después de procesada la Interfase I-01.
 
 \begin{longtable}{p{3.5cm} p{3cm} p{1.5cm} p{5.5cm}}
 \caption{Estructura de la Interfase I-02: Confirmación de Reserva} \\
@@ -114,7 +180,25 @@ A continuación se detalla la estructura de datos de cada interfase, incluyendo 
 
 \textit{Nota.} PEN = Sol peruano (código ISO 4217). Base64 = esquema de codificación binaria a texto.
 
-\subsubsection{Interfase --- Evento de Notificación (API $\rightarrow$ RabbitMQ $\rightarrow$ Servicio de Notificaciones)}
+\subsubsection{Interfase I-03 --- Evento de Notificación (API $\rightarrow$ RabbitMQ $\rightarrow$ Servicio de Notificaciones)}
+
+\begin{figure}[H]
+\caption{Diagrama de Flujo de la Interfase I-03: Evento de Notificación}
+\centering
+\includegraphics[width=0.85\textwidth]{imagenes/figuras/figura_9.png}
+% \begin{verbatim}
+% sequenceDiagram
+%     participant A as API Smart-Park
+%     participant R as RabbitMQ (exchange notifications)
+%     participant N as Servicio de Notificaciones
+%     A->>R: AMQPS publish evento (JSON)
+%     Note over A,R: evento_tipo, evento_id, timestamp,<br/>destinatario_id, canal, payload, prioridad
+%     R->>N: AMQPS consume evento
+%     N-->>N: Envío por websocket / email según canal
+% \end{verbatim}
+\end{figure}
+\vspace{-5pt}
+\textit{Nota.} Elaboración propia. La comunicación es asíncrona; la API no espera respuesta inmediata del servicio de notificaciones.
 
 \begin{longtable}{p{3.5cm} p{3cm} p{1.5cm} p{5.5cm}}
 \caption{Estructura de la Interfase I-03: Evento de Notificación} \\
@@ -143,7 +227,23 @@ A continuación se detalla la estructura de datos de cada interfase, incluyendo 
 
 \textit{Nota.} Los eventos se serializan en JSON y se publican en el intercambio (\textit{exchange}) \texttt{notifications} de RabbitMQ.
 
-\subsubsection{Interfase --- Registro de Ingreso/Salida de Vehículo (Agente del Sistema Local $\rightarrow$ API central, API REST)}
+\subsubsection{Interfase I-04 --- Registro de Ingreso/Salida de Vehículo (Agente del Sistema Local $\rightarrow$ API central, API REST)}
+
+\begin{figure}[H]
+\caption{Diagrama de Flujo de la Interfase I-04: Registro de Ingreso/Salida}
+\centering
+\includegraphics[width=0.85\textwidth]{imagenes/figuras/figura_10.png}
+% \begin{verbatim}
+% sequenceDiagram
+%     participant G as Agente del Sistema Local (Garita)
+%     participant A as API Smart-Park
+%     G->>A: HTTPS POST /api/accesos (JSON)
+%     Note over G,A: reserva_id, accion, trabajador_id,<br/>timestamp, metodo_verificacion, observacion
+%     A-->>G: 200 OK (registro almacenado)
+% \end{verbatim}
+\end{figure}
+\vspace{-5pt}
+\textit{Nota.} Elaboración propia. La acción puede ser de tipo ingreso o salida, según el evento registrado en garita.
 
 \begin{longtable}{p{3.5cm} p{3cm} p{1.5cm} p{5.5cm}}
 \caption{Estructura de la Interfase I-04: Registro de Ingreso/Salida} \\
@@ -171,7 +271,23 @@ A continuación se detalla la estructura de datos de cada interfase, incluyendo 
 
 \textit{Nota.} El \texttt{trabajador\_id} se extrae automáticamente del token JWT de la sesión del trabajador autenticado.
 
-\subsubsection{Interfase --- Solicitud de Pago (API $\rightarrow$ Proveedor de Pagos externo)}
+\subsubsection{Interfase I-05 --- Solicitud de Pago (API $\rightarrow$ Proveedor de Pagos externo)}
+
+\begin{figure}[H]
+\caption{Diagrama de Flujo de la Interfase I-05: Solicitud de Pago}
+\centering
+\includegraphics[width=0.85\textwidth]{imagenes/figuras/figura_11.png}
+% \begin{verbatim}
+% sequenceDiagram
+%     participant A as API Smart-Park
+%     participant P as Proveedor de Pagos (Culqi / PayPal)
+%     A->>P: HTTPS POST /charges (JSON)
+%     Note over A,P: monto, moneda, descripcion,<br/>token_tarjeta, metadata, email_cliente
+%     P-->>A: Acuse de recepción de la transacción
+% \end{verbatim}
+\end{figure}
+\vspace{-5pt}
+\textit{Nota.} Elaboración propia. El \texttt{token\_tarjeta} se genera previamente en el navegador del cliente y nunca transita por los servidores de Smart-Park.
 
 \begin{longtable}{p{3.5cm} p{3cm} p{1.5cm} p{5.5cm}}
 \caption{Estructura de la Interfase I-05: Solicitud de Pago} \\
@@ -199,7 +315,23 @@ A continuación se detalla la estructura de datos de cada interfase, incluyendo 
 
 \textit{Nota.} El token de tarjeta se genera en el navegador del cliente mediante el SDK de la pasarela y nunca pasa por los servidores de Smart-Park, cumpliendo con los estándares PCI DSS.
 
-\subsubsection{Interfase --- Respuesta de Transacción (Proveedor de Pagos $\rightarrow$ API)}
+\subsubsection{Interfase I-06 --- Respuesta de Transacción (Proveedor de Pagos $\rightarrow$ API)}
+
+\begin{figure}[H]
+\caption{Diagrama de Flujo de la Interfase I-06: Respuesta de Transacción}
+\centering
+\includegraphics[width=0.85\textwidth]{imagenes/figuras/figura_12.png}
+% \begin{verbatim}
+% sequenceDiagram
+%     participant P as Proveedor de Pagos
+%     participant A as API Smart-Park
+%     P->>A: HTTPS Webhook (JSON)
+%     Note over P,A: transaccion_id, estado, monto_cobrado,<br/>moneda, fecha_transaccion,<br/>codigo_error, mensaje
+%     A-->>A: Actualiza estado de la reserva
+% \end{verbatim}
+\end{figure}
+\vspace{-5pt}
+\textit{Nota.} Elaboración propia. Esta interfase se recibe de forma asíncrona respecto a la Interfase I-05, mediante un webhook de la pasarela.
 
 \begin{longtable}{p{3.5cm} p{3cm} p{1.5cm} p{5.5cm}}
 \caption{Estructura de la Interfase I-06: Respuesta de Transacción} \\
@@ -228,7 +360,23 @@ A continuación se detalla la estructura de datos de cada interfase, incluyendo 
 
 \textit{Nota.} En caso de rechazo, el campo \texttt{codigo\_error} contiene el código específico de la pasarela (ej. \texttt{card\_declined}, \texttt{insufficient\_funds}).
 
-\subsubsection{Interfase --- Registro de Reseña (Aplicación Web $\rightarrow$ API)}
+\subsubsection{Interfase I-07 --- Registro de Reseña (Aplicación Web $\rightarrow$ API)}
+
+\begin{figure}[H]
+\caption{Diagrama de Flujo de la Interfase I-07: Registro de Reseña}
+\centering
+\includegraphics[width=0.85\textwidth]{imagenes/figuras/figura_13.png}
+% \begin{verbatim}
+% sequenceDiagram
+%     participant W as Aplicación Web
+%     participant A as API Smart-Park
+%     W->>A: HTTPS POST /api/resenas (JSON)
+%     Note over W,A: estacionamiento_id, reserva_id,<br/>calificacion, comentario, es_anonima
+%     A-->>W: 201 Created (reseña registrada)
+% \end{verbatim}
+\end{figure}
+\vspace{-5pt}
+\textit{Nota.} Elaboración propia. Solo se permite el envío de esta interfase cuando la reserva asociada tiene estado completada.
 
 \begin{longtable}{p{3.5cm} p{3cm} p{1.5cm} p{5.5cm}}
 \caption{Estructura de la Interfase I-07: Registro de Reseña} \\
